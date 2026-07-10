@@ -18,7 +18,7 @@ class Plant:
         elif height > 1000:
             print(f"{name.capitalize()}: Error, height can't be too big")
         else:
-            self._height = height
+            self._height = float(height)
 
         if days < 0:
             print(f"{name.capitalize()}: Error, age can't be negative")
@@ -87,7 +87,7 @@ class Flower(Plant):
 
     def bloom(self) -> None:
         self._bloomed = 1
-        print(f"[asking {self.name} to bloom]")
+        print(f"[asking the {self.name} to bloom]")
         self.show()
 
     def show(self) -> None:
@@ -111,24 +111,20 @@ class Tree(Plant):
         super().__init__(name, height, days, growth_rate)
         self.trunk_diameter = trunk_diameter
 
-    def shade(self) -> None:
+    def produce_shade(self) -> None:
         print(f"[asking the {self.name} to produce shade]")
-        if self.get_height() < 1:
-            self.get_height()
-        elif self.trunk_diameter < 1:
-            self.trunk_diameter = 50
-        self.show()
+        if self.get_height() > 0 and self.trunk_diameter > 0:
+            print(
+                f"Tree {self.name.capitalize()} now produces a shade of "
+                f"{round(self.get_height(), 1):.1f}cm long and "
+                f"{round(self.trunk_diameter, 1):.1f}cm wide."
+            )
+        else:
+            print(f"{self.name.capitalize()} can't produce shade!")
 
     def show(self) -> None:
         super().show()
         print(f"Trunk diameter: {round(self.trunk_diameter, 1):.1f}cm")
-        if self.get_height() > 0 and self.trunk_diameter > 0:
-            print(
-                f"Tree {self.name.capitalize()} now produces a shade of \
-{round(self.get_height(), 1):.1f}cm long and {round(self.trunk_diameter, 1):.1f}cm wide."
-            )
-        else:
-            print(f"{self.name.capitalize()} can't produce shade!")
 
 
 class Vegetable(Plant):
@@ -144,37 +140,43 @@ class Vegetable(Plant):
         self.harvest_season = harvest_season
         self.nutritional_value = 0
 
-    def make_nutritional_value(self):
-        if self.nutritional_value < 25:
-            self.growing_days = (25 - self.nutritional_value) / 2
-        print(f"[make {self.name} grow and age for {self.growing_days} days]")
-        while self.nutritional_value < 25:
-            super().grow()
-            self.nutritional_value += 2
+    def grow_and_age_for(self, days: int) -> int:
+        print(f"[make {self.name} grow and age for {days} days]")
+        for _ in range(days):
+            self.grow()
+            self.age()
+        return self.nutritional_value
+
+    def grow(self) -> None:
+        super().grow()
+        self.nutritional_value += 0.5
+
+    def age(self) -> None:
+        super().age()
+        self.nutritional_value += 0.5
 
     def show(self) -> None:
         super().show()
         print(f"Harvest season: {self.harvest_season}")
-        print(f"Nutritional value: {self.nutritional_value}")
+        print(f"Nutritional value: {int(self.nutritional_value)}")
 
 
 if __name__ == "__main__":
-    f = Flower("rose", 20, 50, 0.1, "red")
-    t = Tree("oak", 200, 352, 0.8, 0)
+    f = Flower("rose", 15, 10, 0.1, "red")
+    t = Tree("oak", 200, 365, 0.8, 5)
     s = Tree("spine", 430, 925, 0.5, 5)
-    v = Vegetable("tomato", 5.0, 10, 1, "April")
+    v = Vegetable("tomato", 5.0, 10, 2.1, "April")
 
     print("=== Garden Plant Types ===")
-    print("=== Flower\n")
+    print("=== Flower")
     f.show()
     f.bloom()
     print("=== Tree")
     t.show()
-    t.shade()
-    s.show()
+    t.produce_shade()
     print("=== Vegetable")
     v.show()
-    v.make_nutritional_value()
+    v.grow_and_age_for(20)
     v.show()
 
 # === Garden Plant Types ===
