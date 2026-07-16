@@ -2,8 +2,11 @@
 
 class Plant:
     def __init__(
-        self, name: str, height: float, days: int, growth_rate: float
-        ) -> None:
+        self, name: str,
+        height: float,
+        days: int,
+        growth_rate: float
+    ) -> None:
         self.name = name
         self.height = height
         self.days = days
@@ -17,22 +20,27 @@ class Plant:
 
     def show(self) -> None:
         print(
-    f"Created: {self.name.capitalize()}: {round(self.height, 1)}cm, "
-    f"{self.days} days old"
-)
-
-garden = [
-    Plant("rose", 25.0, 30, 0.8),
-    Plant("oak", 200.0, 365, 2.5),
-    Plant("cactus", 5.0, 90, 0.1),
-    Plant("sunflower", 80.0, 40, 2.5),
-    Plant("fern", 15.0, 120, 0.2),
-]
+            f"Created: {self.name.capitalize()}: {round(self.height, 1)}cm, "
+            f"{self.days} days old"
+        )
 
 
-print("=== Plant Factory Output ===")
-for g in garden:
-    g.show()
+def main() -> None:
+    garden = [
+        Plant("rose", 25.0, 30, 0.8),
+        Plant("oak", 200.0, 365, 2.5),
+        Plant("cactus", 5.0, 90, 0.1),
+        Plant("sunflower", 80.0, 40, 2.5),
+        Plant("fern", 15.0, 120, 0.2),
+    ]
+
+    print("=== Plant Factory Output ===")
+    for g in garden:
+        g.show()
+
+
+if __name__ == "__main__":
+    main()
 
 # for g in garden:
 #     g.show() リストの中身一つ一つにメソッドshow()を呼んでいる

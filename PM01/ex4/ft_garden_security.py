@@ -8,27 +8,16 @@ class Plant:
         days: int,
         growth_rate: float
     ) -> None:
-        self.name = name
-        self.growth_rate = growth_rate
+        self._name = name
+        self._growth_rate = growth_rate
         self._height = 0.0
         self._days = 0
 
-        if height < 0:
-            print(f"{name.capitalize()}: Error, height can't be negative")
-        elif height > 1000:
-            print(f"{name.capitalize()}: Error, height can't be too big")
-        else:
-            self._height = height
-
-        if days < 0:
-            print(f"{name.capitalize()}: Error, age can't be negative")
-        elif days > 1000:
-            print(f"{name.capitalize()}: Error, age can't be too long")
-        else:
-            self._days = days
+        self.set_height(height, is_init=True)
+        self.set_age(days, is_init=True)
 
         print(
-            f"Plant created: {self.name.capitalize()}: "
+            f"Plant created: {self._name.capitalize()}: "
             f"{round(self._height, 1)}cm, {self._days} days old"
         )
 
@@ -38,47 +27,64 @@ class Plant:
     def get_age(self) -> int:
         return self._days
 
-    def set_height(self, h: float) -> None:
+    def set_height(self, h: float, is_init: bool = False) -> None:
         if h < 0:
-            print(f"{self.name.capitalize()}: Error, height can't be negative")
-            print("Height update rejected")
+            print(f"{self._name.title()}: Error, height can't be negative")
+            if not is_init:
+                print("Height update rejected")
             return
         elif h > 1000:
-            print(f"{self.name.capitalize()}: Error, height can't be too big")
-            print("Height update rejected")
+            print(f"{self._name.title()}: Error, height can't be too big")
+            if not is_init:
+                print("Height update rejected")
             return
         else:
             self._height = float(h)
-            print(f"Height updated: {round(self._height, 1)}cm")
+            if not is_init:
+                print(f"Height updated: {int(self._height)}cm")
 
-    def set_age(self, d: int) -> None:
+    def set_age(self, d: int, is_init: bool = False) -> None:
         if d < 0:
-            print(f"{self.name.capitalize()}: Error, age can't be negative")
-            print("Age update rejected")
+            print(f"{self._name.title()}: Error, age can't be negative")
+            if not is_init:
+                print("Age update rejected")
             return
         elif d > 1000:
-            print(f"{self.name.capitalize()}: Error, age can't be too long")
-            print("Age update rejected")
+            print(f"{self._name.title()}: Error, age can't be too long")
+            if not is_init:
+                print("Age update rejected")
             return
         else:
             self._days = d
-            print(f"Age updated: {d} days")
+            if not is_init:
+                print(f"Age updated: {d} days")
 
     def show_current(self) -> None:
         print(
-            f"Current state: {self.name.capitalize()}: {round(self._height, 1)}cm, "
+            f"Current state: {self._name.capitalize()}: "
+            f"{round(self._height, 1)}cm, "
             f"{self._days} days old"
         )
 
 
-if __name__ == "__main__":
+def main() -> None:
     print("=== Garden Security System ===")
     rose = Plant("rose", 15.0, 10, 0.8)
+    print()
+
     rose.set_height(25)
     rose.set_age(30)
+    print()
+
     rose.set_height(-5)
     rose.set_age(-3)
+    print()
+
     rose.show_current()
+
+
+if __name__ == "__main__":
+    main()
     # name = input("名前を入力してください: ")
     # height = float(input("高さ(cm)を入力してください: "))
     # age = int(input("日数を入力してください: "))
