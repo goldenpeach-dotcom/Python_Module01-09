@@ -3,16 +3,16 @@
 class Plant:
 
     class Stats:
-        def __init__ (self):
-            self.grow_cnt: int = 0
-            self.age_cnt: int = 0
-            self.show_cnt: int = 0
+        def __init__(self) -> None:
+            self._grow_cnt: int = 0
+            self._age_cnt: int = 0
+            self._show_cnt: int = 0
 
-        def display(self):
+        def display(self) -> None:
             print(
-                f"Stats: {self.grow_cnt} grow, "
-                f"{self.age_cnt} age, "
-                f"{self.show_cnt} show"
+                f"Stats: {self._grow_cnt} grow, "
+                f"{self._age_cnt} age, "
+                f"{self._show_cnt} show"
             )
 
     def __init__(
@@ -24,27 +24,25 @@ class Plant:
     ) -> None:
         self._name = name
         self._growth_rate = growth_rate
-        self._height = 0.0
-        self._days = 0
+        self._height = height
+        self._days = days
         self.__stats = Plant.Stats()
 
-        self.set_height(height, is_init=True)
-        self.set_age(days, is_init=True)
-
     @staticmethod
-	def check_year_old(self) -> int:
-		return _days > 365
-	
-	@classmethod
-	def anonymous_make(cls) -> Self:
-        return cls("Unknown plant", 0.0, 0)
+    def check_year_old(days: int) -> bool:
+        return days > 365
 
-    def get_stats(self):
+    @classmethod
+    def anonymous_make(cls) -> "Plant":
+        return cls(name="Unknown plant", height=0.0, days=0, growth_rate=0.0)
+
+    def get_stats(self) -> "Plant.Stats":
         return self.__stats
 
     def grow(self) -> None:
-        self.__stats._grow_cnt += 1
         self._height += self._growth_rate
+        self._days += 1
+        self.__stats._grow_cnt += 1
 
     def age(self) -> None:
         self.__stats._age_cnt += 1
@@ -91,7 +89,7 @@ class Plant:
                 print(f"Age updated: {d} days")
 
     def show(self) -> None:
-        self.__stats.show_cnt += 1
+        self.__stats._show_cnt += 1
         print(
             f"{self._name.capitalize()}: {round(self.get_height(), 1)}cm, "
             f"{self.get_age()} days old"
@@ -110,17 +108,39 @@ class Flower(Plant):
         super().__init__(name, height, days, growth_rate)
         self._color = color
         self._bloomed = 0
+        self.__stats = Plant.Stats()
 
     def bloom(self) -> None:
         self._bloomed = 1
 
     def show(self) -> None:
+        self.__stats._show_cnt += 1
         super().show()
         print(f"Color: {self._color}")
         if self._bloomed == 0:
             print(f"{self._name.capitalize()} has not bloomed yet")
         if self._bloomed == 1:
             print(f"{self._name.capitalize()} is blooming beautifully!")
+
+
+class Seed(Flower):
+    def __init__(
+        self,
+        name: str,
+        height: float,
+        days: int,
+        growth_rate: float,
+        color: str,
+        seed_count: int = 0
+    ) -> None:
+        super().__init__(name, height, days, growth_rate, color)
+        self.seed_count = seed_count
+        self.__stats = Plant.Stats()
+
+    def show(self) -> None:
+        self.__stats._show_cnt += 1
+        super().show()  # Flowerのshow()を呼んでから
+        print(f"Seeds: {self.seed_count}")
 
 
 class Tree(Plant):
@@ -134,6 +154,7 @@ class Tree(Plant):
     ) -> None:
         super().__init__(name, height, days, growth_rate)
         self._trunk_diameter = trunk_diameter
+        self.__stats = Plant.Stats()
 
     def produce_shade(self) -> None:
         print(f"[asking the {self._name} to produce shade]")
@@ -147,6 +168,7 @@ class Tree(Plant):
             print(f"{self._name.capitalize()} can't produce shade!")
 
     def show(self) -> None:
+        self.__stats._show_cnt += 1
         super().show()
         print(f"Trunk diameter: {round(self._trunk_diameter, 1):.1f}cm")
 
@@ -163,33 +185,42 @@ class Vegetable(Plant):
         super().__init__(name, height, days, growth_rate)
         self._harvest_season = harvest_season
         self._nutritional_value: float = 0
+        self.__stats = Plant.Stats()
 
     def grow_and_age_for(self, days: int) -> float:
         print(f"[make {self._name} grow and age for {days} days]")
         for _ in range(days):
+            self.__stats._grow_cnt += 1
+            self.__stats._age_cnt += 1
             self.grow()
             self.age()
         return self._nutritional_value
 
     def grow(self) -> None:
         super().grow()
+        self.__stats._grow_cnt += 1
         self._nutritional_value += 0.5
 
     def age(self) -> None:
         super().age()
+        self.__stats._age_cnt += 1
         self._nutritional_value += 0.5
 
     def show(self) -> None:
         super().show()
+        self.__stats._show_cnt += 1
         print(f"Harvest season: {self._harvest_season}")
         print(f"Nutritional value: {int(self._nutritional_value)}")
 
-def display_stats(Plant)
-	print(
-		f"Stats: {grow()が呼ばれた数} grow,"
-		f" {age()が呼ばれた数} age, "
-		f"{bloom()produce_shade()seed()呼ばれた数}"
-	)
+
+def display_stats(plant) -> None:
+    stats = plant.get_stats()
+    print(
+        f"Stats: {stats._grow_cnt} grow, "
+        f"{stats._age_cnt} age, "
+        f"{stats._show_cnt} show"
+    )
+
 
 def main() -> None:
     f = Flower("rose", 15, 10, 0.1, "red")
@@ -197,24 +228,30 @@ def main() -> None:
     v = Vegetable("tomato", 5.0, 10, 2.1, "April")
 
     print("=== Garden statistics ===")
-	print("=== Check year-old")
-	print("Is 30 days more than a year? -> False")
-	print("Is 400 days more than a year? -> True")
+    print("=== Check year-old")
+    print("Is 30 days more than a year? -> False")
+    print("Is 400 days more than a year? -> True")
 
     print("=== Flower")
     f.show()
+    display_stats(f)
     print(f"[asking the {f._name} to bloom]")
     f.bloom()
     f.show()
+    display_stats(f)
     print()
     print("=== Tree")
     t.show()
+    display_stats(t)
     t.produce_shade()
+    display_stats(t)
     print()
     print("=== Vegetable")
     v.show()
+    display_stats(v)
     v.grow_and_age_for(20)
     v.show()
+    display_stats(v)
 
 
 if __name__ == "__main__":
