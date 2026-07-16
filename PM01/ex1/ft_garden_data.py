@@ -2,22 +2,31 @@
 
 class Plant:
     def __init__(self, name: str, height: int, days: int) -> None:
-        self.name = name
-        self.height = height
-        self.days = days
+        self.name: str = name
+        self.height: int = height
+        self.days: int = days
 
     def show(self) -> None:
-        print(f"{self.name.title()}: {self.height}cm, {self.days} days old")
+    print(
+        f"{self.name.capitalize()}: "
+        f"{self.height}cm, {self.days} days old"
+    )
 
-garden = [
-    Plant("rose", 25, 30),
-    Plant("sunflower", 80, 40),
-    Plant("cactus", 15, 20),
-]
 
-print("=== Garden Plant Registry ===")
-for p in garden:
-    p.show()
+def main() -> None:
+    garden = [
+        Plant("rose", 25, 30),
+        Plant("sunflower", 80, 40),
+        Plant("cactus", 15, 20),
+    ]
+    print("=== Garden Plant Registry ===")
+    for p in garden:
+        p.show()
+
+
+if __name__ == '__main__':
+    main()
+
 
 # for 変数名 in　中身を一つずつ取り出せるもの
 #     処理

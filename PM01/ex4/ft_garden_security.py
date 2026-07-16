@@ -14,21 +14,21 @@ class Plant:
         self._days = 0
 
         if height < 0:
-            print(f"{name.title()}: Error, height can't be negative")
+            print(f"{name.capitalize()}: Error, height can't be negative")
         elif height > 1000:
-            print(f"{name.title()}: Error, height can't be too big")
+            print(f"{name.capitalize()}: Error, height can't be too big")
         else:
             self._height = height
 
         if days < 0:
-            print(f"{name.title()}: Error, age can't be negative")
+            print(f"{name.capitalize()}: Error, age can't be negative")
         elif days > 1000:
-            print(f"{name.title()}: Error, age can't be too long")
+            print(f"{name.capitalize()}: Error, age can't be too long")
         else:
             self._days = days
 
         print(
-            f"Plant created: {self.name.title()}: "
+            f"Plant created: {self.name.capitalize()}: "
             f"{round(self._height, 1)}cm, {self._days} days old"
         )
 
@@ -40,11 +40,11 @@ class Plant:
 
     def set_height(self, h: float) -> None:
         if h < 0:
-            print(f"{self.name.title()}: Error, height can't be negative")
+            print(f"{self.name.capitalize()}: Error, height can't be negative")
             print("Height update rejected")
             return
         elif h > 1000:
-            print(f"{self.name.title()}: Error, height can't be too big")
+            print(f"{self.name.capitalize()}: Error, height can't be too big")
             print("Height update rejected")
             return
         else:
@@ -53,11 +53,11 @@ class Plant:
 
     def set_age(self, d: int) -> None:
         if d < 0:
-            print(f"{self.name.title()}: Error, age can't be negative")
+            print(f"{self.name.capitalize()}: Error, age can't be negative")
             print("Age update rejected")
             return
         elif d > 1000:
-            print(f"{self.name.title()}: Error, age can't be too long")
+            print(f"{self.name.capitalize()}: Error, age can't be too long")
             print("Age update rejected")
             return
         else:
@@ -66,7 +66,7 @@ class Plant:
 
     def show_current(self) -> None:
         print(
-            f"Current state: {self.name.title()}: {round(self._height, 1)}cm, "
+            f"Current state: {self.name.capitalize()}: {round(self._height, 1)}cm, "
             f"{self._days} days old"
         )
 
