@@ -1,6 +1,20 @@
 #!/usr/bin/env python3
 
 class Plant:
+
+    class Stats:
+        def __init__ (self):
+            self.grow_cnt: int = 0
+            self.age_cnt: int = 0
+            self.show_cnt: int = 0
+
+        def display(self):
+            print(
+                f"Stats: {self.grow_cnt} grow, "
+                f"{self.age_cnt} age, "
+                f"{self.show_cnt} show"
+            )
+
     def __init__(
         self,
         name: str,
@@ -12,14 +26,28 @@ class Plant:
         self._growth_rate = growth_rate
         self._height = 0.0
         self._days = 0
+        self.__stats = Plant.Stats()
 
         self.set_height(height, is_init=True)
         self.set_age(days, is_init=True)
 
+    @staticmethod
+	def check_year_old(self) -> int:
+		return _days > 365
+	
+	@classmethod
+	def anonymous_make(cls) -> Self:
+        return cls("Unknown plant", 0.0, 0)
+
+    def get_stats(self):
+        return self.__stats
+
     def grow(self) -> None:
+        self.__stats._grow_cnt += 1
         self._height += self._growth_rate
 
     def age(self) -> None:
+        self.__stats._age_cnt += 1
         self._days += 1
 
     def get_height(self) -> float:
@@ -63,32 +91,11 @@ class Plant:
                 print(f"Age updated: {d} days")
 
     def show(self) -> None:
+        self.__stats.show_cnt += 1
         print(
             f"{self._name.capitalize()}: {round(self.get_height(), 1)}cm, "
             f"{self.get_age()} days old"
         )
-
-
-	@staticmethod
-	def check_year_old(self)
-		if _days > 365:
-		else:
-	
-	@classmethod
-	def anonymous_make(self):
-
-class Stats(Plant):
-	def __init__(
-		self,
-		name: str,
-		grow_cnt: int,
-		age_cnt: int,
-		show_cnt: int
-	) -> None:
-	self._name = name
-	self._grow_cnt = grow_cnt
-	self._age_cnt = age_cnt
-	self.show_cnt = show_cnt
 
 
 class Flower(Plant):
