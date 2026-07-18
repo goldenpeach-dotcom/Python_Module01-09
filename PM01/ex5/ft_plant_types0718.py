@@ -10,8 +10,11 @@ class Plant:
     ) -> None:
         self._name = name
         self._growth_rate = growth_rate
-        self._height = height
-        self._days = days
+        self._height = 0.0
+        self._days = 0
+
+        self.set_height(height, is_init=True)
+        self.set_age(days, is_init=True)
 
     def grow(self) -> None:
         self._height += self._growth_rate
@@ -25,33 +28,39 @@ class Plant:
     def get_age(self) -> int:
         return self._days
 
-    def set_height(self, h: float) -> None:
+    def set_height(self, h: float, is_init: bool = False) -> None:
         if h < 0:
             print(
                 f"{self._name.capitalize()}: "
                 f"Error, height can't be negative")
-            print("Height update rejected")
+            if not is_init:
+                print("Height update rejected")
             return
         elif h > 1000:
             print(f"{self._name.capitalize()}: Error, height can't be too big")
-            print("Height update rejected")
+            if not is_init:
+                print("Height update rejected")
             return
         else:
             self._height = float(h)
-            print(f"Height updated: {int(self._height)}cm")
+            if not is_init:
+                print(f"Height updated: {int(self._height)}cm")
 
-    def set_age(self, d: int) -> None:
+    def set_age(self, d: int, is_init: bool = False) -> None:
         if d < 0:
             print(f"{self._name.capitalize()}: Error, age can't be negative")
-            print("Age update rejected")
+            if not is_init:
+                print("Age update rejected")
             return
         elif d > 1000:
             print(f"{self._name.capitalize()}: Error, age can't be too long")
-            print("Age update rejected")
+            if not is_init:
+                print("Age update rejected")
             return
         else:
             self._days = d
-            print(f"Age updated: {d} days")
+            if not is_init:
+                print(f"Age updated: {d} days")
 
     def show(self) -> None:
         print(

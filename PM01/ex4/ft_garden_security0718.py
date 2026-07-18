@@ -27,31 +27,37 @@ class Plant:
     def get_age(self) -> int:
         return self._days
 
-    def set_height(self, h: float) -> None:
+    def set_height(self, h: float, is_init: bool = False) -> None:
         if h < 0:
             print(f"{self._name.title()}: Error, height can't be negative")
-            print("Height update rejected")
+            if not is_init:
+                print("Height update rejected")
             return
         elif h > 1000:
             print(f"{self._name.title()}: Error, height can't be too big")
-            print("Height update rejected")
+            if not is_init:
+                print("Height update rejected")
             return
         else:
             self._height = float(h)
-            print(f"Height updated: {int(self._height)}cm")
+            if not is_init:
+                print(f"Height updated: {int(self._height)}cm")
 
-    def set_age(self, d: int) -> None:
+    def set_age(self, d: int, is_init: bool = False) -> None:
         if d < 0:
             print(f"{self._name.title()}: Error, age can't be negative")
-            print("Age update rejected")
+            if not is_init:
+                print("Age update rejected")
             return
         elif d > 1000:
             print(f"{self._name.title()}: Error, age can't be too long")
-            print("Age update rejected")
+            if not is_init:
+                print("Age update rejected")
             return
         else:
             self._days = d
-            print(f"Age updated: {d} days")
+            if not is_init:
+                print(f"Age updated: {d} days")
 
     def show_current(self) -> None:
         print(
