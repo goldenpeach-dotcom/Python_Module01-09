@@ -72,7 +72,7 @@ class Plant:
             return
         else:
             self._days = d
-            cd print(f"Age updated: {d} days")
+            print(f"Age updated: {d} days")
 
     def show(self) -> None:
         self.__stats._show_cnt += 1
