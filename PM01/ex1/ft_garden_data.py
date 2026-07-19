@@ -7,17 +7,17 @@ class Plant:
         self.days: int = days
 
     def show(self) -> None:
-    print(
-        f"{self.name.capitalize()}: "
-        f"{self.height}cm, {self.days} days old"
-    )
+        print(
+            f"{self.name.capitalize()}: "
+            f"{self.height}cm, {self.days} days old"
+        )
 
 
 def main() -> None:
     garden = [
         Plant("rose", 25, 30),
-        Plant("sunflower", 80, 40),
-        Plant("cactus", 15, 20),
+        Plant("sunflower", 80, 45),
+        Plant("cactus", 15, 120),
     ]
     print("=== Garden Plant Registry ===")
     for p in garden:

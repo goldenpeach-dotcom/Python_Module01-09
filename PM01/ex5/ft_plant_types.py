@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+DEFAULT_HEIGHT = 0.0
+DEFAULT_AGE = 0
+
 class Plant:
     def __init__(
         self,
@@ -10,8 +13,11 @@ class Plant:
     ) -> None:
         self._name = name
         self._growth_rate = growth_rate
-        self._height = height
-        self._days = days
+        self._height = DEFAULT_HEIGHT
+        self.set_height(height, is_init=True)
+
+        self._days = DEFAULT_AGE
+        self.set_age(days, is_init=True)
 
     def grow(self) -> None:
         self._height += self._growth_rate
@@ -25,7 +31,7 @@ class Plant:
     def get_age(self) -> int:
         return self._days
 
-    def set_height(self, h: float) -> None:
+    def set_height(self, h: float, is_init: bool=False) -> None:
         if h < 0:
             print(
                 f"{self._name.capitalize()}: "
@@ -34,13 +40,13 @@ class Plant:
             return
         elif h > 1000:
             print(f"{self._name.capitalize()}: Error, height can't be too big")
-            print("Height update rejected")
+            print("Height update reje_types.pycted")
             return
-        else:
-            self._height = float(h)
+        self._height = float(h)
+        if not is_init:
             print(f"Height updated: {int(self._height)}cm")
 
-    def set_age(self, d: int) -> None:
+    def set_age(self, d: int,  is_init: bool=False) -> None:
         if d < 0:
             print(f"{self._name.capitalize()}: Error, age can't be negative")
             print("Age update rejected")
@@ -49,8 +55,8 @@ class Plant:
             print(f"{self._name.capitalize()}: Error, age can't be too long")
             print("Age update rejected")
             return
-        else:
-            self._days = d
+        self._days = d
+        if not is_init:
             print(f"Age updated: {d} days")
 
     def show(self) -> None:
@@ -78,11 +84,11 @@ class Flower(Plant):
 
     def show(self) -> None:
         super().show()
-        print(f"Color: {self._color}")
+        print(f" Color: {self._color}")
         if self._bloomed == 0:
-            print(f"{self._name.capitalize()} has not bloomed yet")
+            print(f" {self._name.capitalize()} has not bloomed yet")
         if self._bloomed == 1:
-            print(f"{self._name.capitalize()} is blooming beautifully!")
+            print(f" {self._name.capitalize()} is blooming beautifully!")
 
 
 class Tree(Plant):
@@ -110,7 +116,7 @@ class Tree(Plant):
 
     def show(self) -> None:
         super().show()
-        print(f"Trunk diameter: {round(self._trunk_diameter, 1):.1f}cm")
+        print(f" Trunk diameter: {round(self._trunk_diameter, 1):.1f}cm")
 
 
 class Vegetable(Plant):
@@ -143,8 +149,8 @@ class Vegetable(Plant):
 
     def show(self) -> None:
         super().show()
-        print(f"Harvest season: {self._harvest_season}")
-        print(f"Nutritional value: {int(self._nutritional_value)}")
+        print(f" Harvest season: {self._harvest_season}")
+        print(f" Nutritional value: {int(self._nutritional_value)}")
 
 
 def main() -> None:

@@ -30,7 +30,7 @@ def main() -> None:
         Plant("rose", 25.0, 30, 0.8),
         Plant("oak", 200.0, 365, 2.5),
         Plant("cactus", 5.0, 90, 0.1),
-        Plant("sunflower", 80.0, 40, 2.5),
+        Plant("sunflower", 80.0, 45, 2.5),
         Plant("fern", 15.0, 120, 0.2),
     ]
 
