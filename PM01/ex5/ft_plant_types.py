@@ -3,6 +3,7 @@
 DEFAULT_HEIGHT = 0.0
 DEFAULT_AGE = 0
 
+
 class Plant:
     def __init__(
         self,
@@ -31,7 +32,7 @@ class Plant:
     def get_age(self) -> int:
         return self._days
 
-    def set_height(self, h: float, is_init: bool=False) -> None:
+    def set_height(self, h: float, is_init: bool = False) -> None:
         if h < 0:
             print(
                 f"{self._name.capitalize()}: "
@@ -46,7 +47,7 @@ class Plant:
         if not is_init:
             print(f"Height updated: {int(self._height)}cm")
 
-    def set_age(self, d: int,  is_init: bool=False) -> None:
+    def set_age(self, d: int,  is_init: bool = False) -> None:
         if d < 0:
             print(f"{self._name.capitalize()}: Error, age can't be negative")
             print("Age update rejected")
@@ -72,11 +73,11 @@ class Flower(Plant):
         name: str,
         height: float,
         days: int,
-        growth_rate: float,
-        color: str
+        color: str,
+        growth_rate: float
     ) -> None:
         super().__init__(name, height, days, growth_rate)
-        self._color = color
+        self.color = color
         self._bloomed = 0
 
     def bloom(self) -> None:
@@ -84,7 +85,7 @@ class Flower(Plant):
 
     def show(self) -> None:
         super().show()
-        print(f" Color: {self._color}")
+        print(f" Color: {self.color}")
         if self._bloomed == 0:
             print(f" {self._name.capitalize()} has not bloomed yet")
         if self._bloomed == 1:
@@ -154,7 +155,7 @@ class Vegetable(Plant):
 
 
 def main() -> None:
-    f = Flower("rose", 15, 10, 0.1, "red")
+    f = Flower("rose", 15, 10, "red", 0.1)
     t = Tree("oak", 200, 365, 0.8, 5)
     v = Vegetable("tomato", 5.0, 10, 2.1, "April")
 

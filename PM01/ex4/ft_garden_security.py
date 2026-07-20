@@ -3,6 +3,7 @@
 DEFAULT_HEIGHT = 0.0
 DEFAULT_AGE = 0
 
+
 class Plant:
     def __init__(
         self,
@@ -29,7 +30,7 @@ class Plant:
     def get_age(self) -> int:
         return self._days
 
-    def set_height(self, h: float, is_init: bool=False) -> None:
+    def set_height(self, h: float, is_init: bool = False) -> None:
         if h < 0:
             print(f"{self._name.title()}: Error, height can't be negative")
             if not is_init:
@@ -44,7 +45,7 @@ class Plant:
         if not is_init:
             print(f"Height updated: {int(self._height)}cm")
 
-    def set_age(self, d: int,is_init: bool=False) -> None:
+    def set_age(self, d: int, is_init: bool = False) -> None:
         if d < 0:
             print(f"{self._name.title()}: Error, age can't be negative")
             if not is_init:
