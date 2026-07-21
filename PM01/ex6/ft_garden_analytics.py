@@ -218,8 +218,8 @@ class Tree(Plant):
         return self._trunk_diameter
 
     def produce_shade(self) -> None:
-        print(f"[asking the {self._name} to produce shade]")
-        if self.get_height() > 0 and self._trunk_diameter > 0:
+        print(f"[asking the {self.get_name()} to produce shade]")
+        if self.get_height() > 0 and self.get_trunk_diameter() > 0:
             print(
                 f"Tree {self.get_name().capitalize()} now produces a shade of "
                 f"{round(self.get_height(), 1):.1f}cm long and "

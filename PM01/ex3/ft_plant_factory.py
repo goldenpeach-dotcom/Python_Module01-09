@@ -41,8 +41,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-# for g in garden:
-#     g.show() リストの中身一つ一つにメソッドshow()を呼んでいる
-# 	garden.show()✖リスト自体にメソッドを呼んではいけない
-# gardenは値が入った箱であって、Plantそのものではない

@@ -125,7 +125,7 @@ class Tree(Plant):
 
     def produce_shade(self) -> None:
         print(f"[asking the {self.get_name()} to produce shade]")
-        if self.get_height() > 0 and self._trunk_diameter > 0:
+        if self.get_height() > 0 and self.get_trunk_diameter() > 0:
             print(
                 f"Tree {self.get_name().capitalize()} now produces a shade of "
                 f"{round(self.get_height(), 1):.1f}cm long and "
@@ -159,12 +159,6 @@ class Vegetable(Plant):
             self.age()
         return self._nutritional_value
 
-    def get_nutritional_value(self) -> float:
-        return self._nutritional_value
-
-    def get_harvest_season(self) -> str:
-        return self._harvest_season
-
     def grow(self) -> None:
         super().grow()
         self._nutritional_value += 0.5
@@ -172,6 +166,12 @@ class Vegetable(Plant):
     def age(self) -> None:
         super().age()
         self._nutritional_value += 0.5
+
+    def get_harvest_season(self) -> str:
+        return self._harvest_season
+
+    def get_nutritional_value(self) -> float:
+        return self._nutritional_value
 
     def show(self) -> None:
         super().show()
@@ -187,7 +187,7 @@ def main() -> None:
     print("=== Garden Plant Types ===")
     print("=== Flower")
     f.show()
-    print(f"[asking the {f._name} to bloom]")
+    print(f"[asking the {f.get_name()} to bloom]")
     f.bloom()
     f.show()
     print()
