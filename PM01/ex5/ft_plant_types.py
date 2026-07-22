@@ -40,14 +40,16 @@ class Plant:
             print(
                 f"{self.get_name().capitalize()}: "
                 f"Error, height can't be negative")
-            print("Height update rejected")
+            if not is_init
+                print("Height update rejected")
             return
         elif h > 1000:
             print(
                 f"{self.get_name().capitalize()}: "
                 f"Error, height can't be too big"
             )
-            print("Height update reje_types.pycted")
+            if not is_init
+                print("Height update rejected")
             return
         self._height = float(h)
         if not is_init:
@@ -59,14 +61,16 @@ class Plant:
                 f"{self.get_name().capitalize()}: "
                 f"Error, age can't be negative"
             )
-            print("Age update rejected")
+            if not is_init
+                print("Age update rejected")
             return
         elif d > 1000:
             print(
                 f"{self.get_name().capitalize()}: "
                 f"Error, age can't be too long"
             )
-            print("Age update rejected")
+            if not is_init
+                print("Age update rejected")
             return
         self._days = d
         if not is_init:
