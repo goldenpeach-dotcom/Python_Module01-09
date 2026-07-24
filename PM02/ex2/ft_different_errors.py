@@ -2,17 +2,16 @@ def garden_operations(operation_number) -> None:
     if operation_number == 0:
         int("aaa")
 
-    elif operation_number == 1:
+    if operation_number == 1:
         100 / 0
 
-    elif operation_number == 2:
+    if operation_number == 2:
         open("test.txt")
 
-    elif operation_number == 3:
+    if operation_number == 3:
         "aaa" + 100
 
-    else:
-        return
+    return
 
 
 def test_error_types() -> None:
