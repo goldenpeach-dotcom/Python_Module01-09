@@ -51,5 +51,9 @@ def test_custom_errors():
     print("All custom error types work correctly!")
 
 
-if __name__ == "__main__":
+def main():
     test_custom_errors()
+
+
+if __name__ == "__main__":
+    main()

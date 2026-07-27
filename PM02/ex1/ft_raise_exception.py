@@ -3,7 +3,7 @@ def input_temparature(temp_str: str) -> int:
         raise ValueError("temp_str must not be None")
     temp_int = int(temp_str)
     if temp_int > 40:
-        raise ValueError(f"{temp_int}°C is too hot for plants (max 40°C)")  
+        raise ValueError(f"{temp_int}°C is too hot for plants (max 40°C)")
     if temp_int < 0:
         raise ValueError(f"{temp_int}°C is too cold for plants (min 0°C)")
     return temp_int
@@ -18,8 +18,13 @@ def test_temparature() -> None:
         except (ValueError, TypeError) as e:
             print(f"Caught input_temparature error: {e}")
 
-if __name__ == "__main__":
+
+def main():
     print("=== Garden Temparature ===\n")
     test_temparature()
 
     print("All test completed - program didn't crash!\n")
+
+
+if __name__ == "__main__":
+    main()

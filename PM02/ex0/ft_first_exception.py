@@ -12,6 +12,7 @@ def test_temparature() -> None:
         except (ValueError, TypeError) as e:
             print(f"Caught input_temparature error: {e}")
 
+
 def main() -> None:
     print("=== Garden Temparature ===\n")
     test_temparature()
