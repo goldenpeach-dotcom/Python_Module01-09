@@ -8,7 +8,7 @@ class ArgcError(Exception):
 
 
 class ScoreError(Exception):
-    def __init__(self, message="No score provided!") -> None:
+    def __init__(self, message="Invalid score value!") -> None:
         super().__init__(message)
 
 
@@ -18,45 +18,48 @@ def is_valid_score(s: str) -> bool:
     return s.isdigit()
 
 
-def check_scores(args_lst: list[str]) -> None:
+def check_scores(args_lst: list[str]) -> list[str]:
     if len(args_lst) < 2:
-        raise ScoreError()
+        raise ArgcError()
 
+    valid: list[str] = []
     invalid: list[str] = []
     for s in args_lst[1:]:
-        if not is_valid_score(s):
+        if is_valid_score(s):
+            valid.append(s)
+        else:
             invalid.append(s)
 
     if invalid:
         lines = [f"Invalid parameter: {s}" for s in invalid]
-        raise ArgcError("\n".join(lines))
+        print("\n".join(lines))
 
+    if not valid:
+        raise ScoreError()
+
+    return valid
 
 def analytics_print(args_lst: list[str]) -> None:
-    program_name, *args = args_lst
+    _, *args = args_lst
     scores = [int(a) for a in args]
     print(f"Scores processed: {scores}")
     print(f"Total players   : {len(scores)}")
     print(f"Total scores    : {sum(scores)}")
-    print(f"Average Scores  : {sum(scores) / len(scores)}")
+    print(f"Average scores  : {sum(scores) / len(scores)}")
     print(f"High score      : {max(scores)}")
     print(f"Low score       : {min(scores)}")
     print(f"Score range     : {max(scores) - min(scores)}")
 
 
 def analytics_argv(args_lst: list[str]) -> None:
-    usage = (
-        "No score provided. "
-        f"Usage: {args_lst[0]} <score1> <score2> ..."
-    )
     try:
-        check_scores(args_lst)
-        analytics_print(args_lst)
-    except ArgcError as e:
+        valid = check_scores(args_lst)
+        analytics_print([args_lst[0]] + valid)
+    except ScoreError as e:
         print(e)
-        print(usage)
-    except ScoreError:
-        print(usage)
+        print(f"{ArgcError()} Usage: {args_lst[0]} <score1> <score2> ...")
+    except ArgcError as e:
+        print(f"{e} Usage: {args_lst[0]} <score1> <score2> ...")
 
 
 def main() -> None:
