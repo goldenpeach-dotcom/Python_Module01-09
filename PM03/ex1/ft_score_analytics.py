@@ -13,7 +13,7 @@ class ScoreError(Exception):
 
 
 def is_valid_score(s: str) -> bool:
-    if s.startswith('-'):
+    if s[0] == '-':
         return s[1:].isdigit()
     return s.isdigit()
 
