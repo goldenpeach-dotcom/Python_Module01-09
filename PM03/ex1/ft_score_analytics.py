@@ -31,7 +31,7 @@ def check_scores(args_lst: list[str]) -> list[str]:
             invalid.append(s)
 
     if invalid:
-        lines = [f"Invalid parameter: {s}" for s in invalid]
+        lines = [f"Invalid parameter: '{s}'" for s in invalid]
         print("\n".join(lines))
 
     if not valid:
