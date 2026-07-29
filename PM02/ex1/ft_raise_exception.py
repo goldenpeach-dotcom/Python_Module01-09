@@ -19,7 +19,7 @@ def test_temparature() -> None:
             print(f"Caught input_temparature error: {e}")
 
 
-def main():
+def main() -> None:
     print("=== Garden Temparature ===\n")
     test_temparature()
 
