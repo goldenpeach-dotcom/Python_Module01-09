@@ -1,5 +1,6 @@
 import sys
 
+
 def parse_arg(arg: str) -> tuple[str, int]:
     if ":" not in arg:
         raise ValueError(f"Invalid format (missing ':'): {arg}")
@@ -15,6 +16,7 @@ def parse_arg(arg: str) -> tuple[str, int]:
     count = int(count_str)
 
     return name, count
+
 
 def calc_total(inventory: dict[str, int]) -> int:
     return sum(inventory.values())
@@ -66,7 +68,7 @@ def main() -> None:
             name, count = parse_arg(arg)
 
             if name in inventory:
-                print(f"Rebundant item '{name}' -")
+                print(f"Rebundant item '{name}' - discarding")
 
             inventory[name] = count
 
@@ -88,7 +90,7 @@ def main() -> None:
     percentages = calc_percentage(inventory)
     display_percentages(percentages)
 
-    add_or_update_item(inventory, "elixir", 3)
+    add_item(inventory, "elixir", 3)
     print("After adding elixir:", inventory)
 
 
