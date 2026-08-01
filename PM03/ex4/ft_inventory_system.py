@@ -22,12 +22,16 @@ def calc_total(inventory: dict[str, int]) -> int:
     return sum(inventory.values())
 
 
+def get_value(item: tuple[str, int]) -> int:
+    return item[1]
+
+
 def find_max_item(inventory: dict[str, int]) -> tuple[str, int]:
-    return max(inventory.items(), key=lambda x: x[1])
+    return max(inventory.items(), key=get_value)
 
 
 def find_min_item(inventory: dict[str, int]) -> tuple[str, int]:
-    return min(inventory.items(), key=lambda x: x[1])
+    return min(inventory.items(), key=get_value)
 
 
 def add_item(inventory: dict[str, int], name: str, count: int) -> None:
@@ -71,7 +75,7 @@ def main() -> None:
 
             if name in inventory:
                 print(f"Rebundant item '{name}' - discarding")
-                continue 
+                continue
 
             inventory[name] = count
 
@@ -86,7 +90,7 @@ def main() -> None:
     print("Got inventory: ", inventory)
 
     print("Item list : ", list(inventory.keys()))
-    # print ("aaa")
+
     total = calc_total(inventory)
     print("Total items:", total)
 
