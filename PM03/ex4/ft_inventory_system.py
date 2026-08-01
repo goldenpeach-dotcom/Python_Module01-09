@@ -55,7 +55,7 @@ def calc_percentage(inventory: dict[str, int]) -> dict[str, float]:
 def display_percentages(percentages: dict[str, float]) -> None:
     for nm, pct in percentages.items():
         print(
-            f"Item {nm} represnts "
+            f"Item {nm} represents "
             f"{pct: .1f}%"
         )
 
