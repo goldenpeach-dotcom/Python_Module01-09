@@ -1,3 +1,5 @@
+from typing import Any
+
 def input_temparature(temp_str: str) -> int:
     temp_int = int(temp_str)
     return temp_int
@@ -10,9 +12,22 @@ def verify_and_print_temparature(val: any) -> None:
     except(ValueError) as e:
         print(f"Caught input_temparature error : {e}")
 
+def verify_and_print_temparature(val: Any) -> None:
+    try:
+        print(f"Input data is '{val}'")
+        temp_valid = input_temparature(val)
+        print(f"Temparature is now {temp_valid}°C")
+    except(ValueError, TypeError) as e:
+        print(f"Caught input_temparature error: {e}")
+
+
 def test_temparature() -> None:
     verify_and_print_temparature("25")
     verify_and_print_temparature("abc")
+<<<<<<< HEAD
+=======
+
+>>>>>>> e9226b57fef76e5744c59f10279833a29f4a9c7d
 
 def main() -> None:
     print("=== Garden Temparature ===\n")
