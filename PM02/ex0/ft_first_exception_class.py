@@ -14,8 +14,10 @@ def test_temparature() -> None:
 # - 手軽で確実、どんなエラーが来ても対応できる
 # - ただし「具体的に何のエラーを想定しているか」が読み手に伝わりにくい
 
+
 if __name__ == "__main__":
     print("=== Garden Temparature ===\n")
     test_temparature()
 
     print("All test completed - program didn't crash!\n")
+    

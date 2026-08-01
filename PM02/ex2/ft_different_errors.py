@@ -2,15 +2,18 @@ def garden_operations(operation_number: int) -> None:
     if operation_number == 0:
         int("aaa")
 
-    if operation_number == 1:
+    elif operation_number == 1:
         100 / 0
 
-    if operation_number == 2:
+    elif operation_number == 2:
         open("test.txt")
 
-    if operation_number == 3:
+    elif operation_number == 3:
         "aaa" + 100
 
+    else:
+        pass
+    
     return
 
 
