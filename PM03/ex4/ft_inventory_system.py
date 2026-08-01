@@ -3,17 +3,17 @@ import sys
 
 def parse_arg(arg: str) -> tuple[str, int]:
     if ":" not in arg:
-        raise ValueError(f"Invalid format (missing ':'): {arg}")
+        raise ValueError(f"Error - invalid parameter '{arg}'")
 
     name, count_str = arg.split(":", 1)
 
     if not name:
         raise ValueError(f"Item name is empty: {arg}")
 
-    if not count_str.isdigit():
-        raise ValueError(f"Count is not a positive integer: {arg}")
-
-    count = int(count_str)
+    try:
+        count = int(count_str)
+    except ValueError as e:
+        raise ValueError(f"Quantity error for '{name}': {e}")
 
     return name, count
 
@@ -57,6 +57,8 @@ def display_percentages(percentages: dict[str, float]) -> None:
 
 
 def main() -> None:
+    print("=== Inventory System Analysis ===")
+
     inventory: dict[str, int] = {}
 
     if len(sys.argv) == 1:
@@ -69,15 +71,22 @@ def main() -> None:
 
             if name in inventory:
                 print(f"Rebundant item '{name}' - discarding")
+                continue 
 
             inventory[name] = count
 
         except ValueError as e:
-            print("Error: ", e)
-            return
+            print(e)
+            continue
 
-    print("Inventory: ", inventory)
+    if not inventory:
+        print("no valid inventory items found.")
+        return
 
+    print("Got inventory: ", inventory)
+
+    print("Item list : ", list(inventory.keys()))
+    # print ("aaa")
     total = calc_total(inventory)
     print("Total items:", total)
 
