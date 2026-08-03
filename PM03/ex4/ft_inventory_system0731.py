@@ -12,8 +12,6 @@ def parse_arg(arg: str) -> tuple[str, int]:
 
     try:
         count = int(count_str)
-        if count < 0:
-            raise ValueError("Quantity can't be negative")
     except ValueError as e:
         raise ValueError(f"Quantity error for '{name}': {e}")
 
@@ -91,6 +89,7 @@ def main() -> None:
 
     print("Got inventory: ", inventory)
 
+
     print("Item list : ", list(inventory))
 
     total = calc_total(inventory)
@@ -105,14 +104,8 @@ def main() -> None:
     percentages = calc_percentage(inventory)
     display_percentages(percentages)
 
-    new_item = "elixir"
-    new_count = 3
-
-    try:
-        add_item(inventory, new_item, new_count)
-        print(f"After adding {new_item}:", inventory)
-    except ValueError as e:
-        print(f"Failed to add item: {e}")
+    add_item(inventory, "elixir", 3)
+    print("After adding elixir:", inventory)
 
 
 if __name__ == "__main__":
