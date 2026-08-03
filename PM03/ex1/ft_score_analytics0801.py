@@ -18,21 +18,21 @@ def is_valid_score(s: str) -> bool:
     return s.isdigit()
 
 
-def check_scores(args_lst: list[str]) -> list[int]:
+def check_scores(args_lst: list[str]) -> list[str]:
     if len(args_lst) < 2:
         raise ArgcError()
 
-    valid: list[int] = []
+    valid: list[str] = []
     invalid: list[str] = []
     for s in args_lst[1:]:
-        try:
-            valid.append(int(s))
-        except ValueError:
+        if is_valid_score(s):
+            valid.append(s)
+        else:
             invalid.append(s)
 
     if invalid:
-        for s in invalid:
-            print(f"Invalid parameter: '{s}'")
+        lines = [f"Invalid parameter: '{s}'" for s in invalid]
+        print("\n".join(lines))
 
     if not valid:
         raise ScoreError()
@@ -40,26 +40,27 @@ def check_scores(args_lst: list[str]) -> list[int]:
     return valid
 
 
-def analytics_print(scores: list[int]) -> None:
+def analytics_print(args_lst: list[str]) -> None:
+    _, *args = args_lst
+    scores = [int(a) for a in args]
     print(f"Scores processed: {scores}")
     print(f"Total players   : {len(scores)}")
     print(f"Total scores    : {sum(scores)}")
-    print(f"Average scores  : {sum(scores) / len(scores):.1f}")
+    print(f"Average scores  : {sum(scores) / len(scores)}")
     print(f"High score      : {max(scores)}")
     print(f"Low score       : {min(scores)}")
     print(f"Score range     : {max(scores) - min(scores)}")
 
 
 def analytics_argv(args_lst: list[str]) -> None:
-    usage = f"Usage: {args_lst[0]} <score1><score2> ..."
     try:
-        valid_scores = check_scores(args_lst)
-        analytics_print(valid_scores)
+        valid = check_scores(args_lst)
+        analytics_print([args_lst[0]] + valid)
     except ScoreError as e:
         print(e)
-        print(f"No score provided! {usage}")
+        print(f"{ArgcError()} Usage: {args_lst[0]} <score1> <score2> ...")
     except ArgcError as e:
-        print(f"{e} {usage}")
+        print(f"{e} Usage: {args_lst[0]} <score1> <score2> ...")
 
 
 def main() -> None:
