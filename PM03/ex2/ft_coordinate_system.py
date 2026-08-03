@@ -4,14 +4,13 @@ import math
 def get_player_pos() -> tuple[float, float, float]:
     while True:
         user_input = input(
-            "Enter new coordinates as floats in format 'x,y,z': ")
+            "Enter new coordinates as floats in format 'x,y,z': "
+        )
         coordinates = user_input.split(",")
 
         if len(coordinates) != 3:
             print("Invalid syntax")
             continue
-
-        values: list[float] = []
 
         try:
             values = [float(coord.strip()) for coord in coordinates]

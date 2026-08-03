@@ -44,16 +44,23 @@ def main() -> None:
     common = set.intersection(*players.values())
     print(f"Common achievements: {common}\n")
 
+    # for name, ach in players.items():
+    #     others_union = set()
+    #     for other_name, other_ach in players.items():
+    #         if other_name != name:
+    #             others_union |= other_ach   # union の短縮記法
+    #     only_this = ach - others_union
+    #     print(f"Only {name:8} has: {only_this}")
     for name, ach in players.items():
         others_union = set.union(
             *(ach for k, ach in players.items() if k != name)
             )
-        only_this = ach.difference(others_union)
+        only_this = ach - others_union
         print(f"Only {name:8} has: {only_this}")
     print()
 
     for name, ach in players.items():
-        missing = all_unique.difference(ach)
+        missing = all_unique - ach
         print(f"{name:8} is missing: {missing}")
     print()
 
