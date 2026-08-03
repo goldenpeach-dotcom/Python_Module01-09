@@ -12,12 +12,6 @@ class ScoreError(Exception):
         super().__init__(message)
 
 
-def is_valid_score(s: str) -> bool:
-    if s[0] == '-':
-        return s[1:].isdigit()
-    return s.isdigit()
-
-
 def check_scores(args_lst: list[str]) -> list[int]:
     if len(args_lst) < 2:
         raise ArgcError()
@@ -29,9 +23,6 @@ def check_scores(args_lst: list[str]) -> list[int]:
             valid.append(int(s))
         except ValueError:
             invalid.append(s)
-
-    if invalid:
-        for s in invalid:
             print(f"Invalid parameter: '{s}'")
 
     if not valid:
