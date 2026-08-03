@@ -31,8 +31,8 @@ def consume_event(
         events_list: list[tuple[str, str]]
         ) -> Generator[tuple[str, str], None, None]:
     while events_list:
-        idx = random.randrange(len(events_list))
-        list_remain = events_list.pop(idx)
+        list_remain = random.choice(events_list)
+        events_list.remove(list_remain)
         yield list_remain
 
 
