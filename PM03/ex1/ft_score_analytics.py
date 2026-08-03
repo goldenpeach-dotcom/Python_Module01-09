@@ -3,12 +3,12 @@ import sys
 
 
 class ArgcError(Exception):
-    def __init__(self, message="No score provided!") -> None:
+    def __init__(self, message: str = "No score provided!") -> None:
         super().__init__(message)
 
 
 class ScoreError(Exception):
-    def __init__(self, message="Invalid score value!") -> None:
+    def __init__(self, message: str = "Invalid score value!") -> None:
         super().__init__(message)
 
 
@@ -38,6 +38,7 @@ def check_scores(args_lst: list[str]) -> list[str]:
         raise ScoreError()
 
     return valid
+
 
 def analytics_print(args_lst: list[str]) -> None:
     _, *args = args_lst

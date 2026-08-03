@@ -85,8 +85,8 @@ def main() -> None:
 
     print("Got inventory: ", inventory)
 
-    print("Item list : ", list(inventory.keys()))
-    # print ("aaa")
+    print("Item list : ", list(inventory))
+    # list(inventory.keys())<-useful (for)
     total = calc_total(inventory)
     print("Total items:", total)
 
