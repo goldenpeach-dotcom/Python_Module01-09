@@ -27,9 +27,10 @@ def get_player_pos() -> tuple[float, float, float]:
 def main() -> None:
     print("=== Game Coordinate System ===")
 
-    x1, y1, z1 = get_player_pos()
+    pos1: tuple[float, float, float] = get_player_pos()
+    x1, y1, z1 = pos1
 
-    print(f"Got a first tuple: ({x1}, {y1}, {z1})")
+    print(f"Got a first tuple: {pos1}")
     print(f"It includes: X={x1}, Y={y1}, Z={z1}")
 
     distance_to_center = round(math.sqrt(x1**2 + y1**2 + z1**2), 4)
@@ -38,7 +39,9 @@ def main() -> None:
 
     print("Get a second set of coordinates")
 
-    x2, y2, z2 = get_player_pos()
+    pos2: tuple[float, float, float] = get_player_pos()
+    x2, y2, z2 = pos2
+
     distance_between_2coords = round(
         math.sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2), 4
         )

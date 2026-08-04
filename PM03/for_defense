@@ -1,0 +1,72 @@
+print(type(inventory.values()))
+inventory.values()が返す型が何かを知りたいとき、typeを使うと知ることができる
+
+＜ライブコーディング予想＞
+・在庫の中でquantityが2以上のアイテムだけ抽出して新しいdictを作る。(ex4)
+    inventory: dict[str, int] = {}
+    for arg in sys.argv[1:]:
+        try:
+            name,count = parse_arg(arg)
+            if count > 2
+                inventory[name] = count
+        except ValueError as e:
+            continue
+
+・quantityが最多のアイテムが複数あったら、全部リストで返す関数
+def find_max_items(inventory: dict[str, int]) -> list[tuple[str, int]]:
+    max_list: list[tuple[str, int]] = []
+    max_quantity = max(inventory.values())
+    for key, values in inventory.items():
+        if values == max_quantity:
+            max_list.append((key, values))
+    return max_list
+
+・percentageを丸めずに小数点３桁で表示するよう変更
+def display_percentages(percentages: dict[str, float]) -> None:
+    for nm, pct in percentages.items():
+        print(
+            f"Item {nm} represents "
+            f"{pct: .3f}%"
+        )
+
+・keysをソートして表示
+print("Got inventory: ", sorted(inventory.items()))
+
+・valuesの合計をlistを使わずに計算
+total = sum(inventory.values())
+
+・itemsを使って、item:quantitu の形式で全部出力する。(python3の対話モードで実行できた。enterを押した後に結果が出力された)
+inventory = {"apple": 5, "banana": 3, "orange": 2}
+for key, values in inventory.items():
+    print(
+        f"Item: {key} "
+        f"Quantity: {values}"
+    )
+
+
+・set操作
+　　ー全プレーヤーのachievementsのうち、誰も持っていないものを表示。
+　　ーあるプレーヤーのachievementsを引数にとりほかの全員が持っているものだけ返す
+　　ー全プレーヤーのachievementをソートして表示　set->list->sort
+・イベントをフィルタリングするジェネレータを書く（actionが'run'のものだけyieldする
+・consume_eventを削除せずにランダムに変えるバージョンを作る
+・無限ジェネレータに'stop'というactionが来たら終了するよう変更
+・comprehensionをその場で書く
+　ーdict comprehensionでscoreが平均以上のものだけ抽出
+　ーlist comprehensionで名前の長さが5以上のものだけ抽出
+　ーset comprehensionを使って頭文字だけのsetを作る
+・２つの座標tupleを受け取り距離を返す関数を書く
+・tupleのunpackを使ってx,y,zを取り出して表示
+・辞書のキーをソートして表示
+def    print_sorted_keys(inventory: dict[str,int]) -> None:
+    for keys in sorted(inventory)
+        print(keys)
+・リストの中の偶数だけ返す
+def    filter_even(num: list[int]) -> list[int]:
+    return[n for n in num if n % 2 == 0]
+・和集合
+    s1.union(s2)
+・積集合
+    s1.intersection(s2)
+・差集合
+    s1.difference(s2)
