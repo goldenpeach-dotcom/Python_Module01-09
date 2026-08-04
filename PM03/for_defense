@@ -46,10 +46,82 @@ for key, values in inventory.items():
 
 ・set操作
 　　ー全プレーヤーのachievementsのうち、誰も持っていないものを表示。
+all = set(ACHIEVEMENTS)
+all.difference(all_uniques)
 　　ーあるプレーヤーのachievementsを引数にとりほかの全員が持っているものだけ返す
+「ほかの全員が持っている」ということは、**他プレイヤー全員のachievementsの積集合(intersection)**を取る必要がある
+python
+all_players = {
+    "Alice": {"Sharp Mind", "Boss Slayer"},
+    "Bob": {"Sharp Mind", "Survivor"},
+    "Charlie": {"Sharp Mind", "Boss Slayer", "Survivor"},
+}
+
+関数内での役割分担
+
+python
+def get_common_with_others(
+        player_achievements: set[str], all_players: dict[str, set[str]]
+        ) -> set[str]:
+    others = [
+        ach for ach in all_players.values() if ach != player_achievements
+    ]
+    return set.intersection(*others)
+all_players.values()で「全員ぶんのachievements集合」を1つずつ取り出す
+その中から、player_achievements(対象の1人の集合)と一致するものだけを除外する → 残るのは「対象の人以外、全員の集合」
+その残った集合たちの積集合を取る → 「対象の人以外の全員が共通して持っているもの」
+つまり、player_achievementsは「誰を除外するかの目印」として使われていて、実際の計算(積集合)にはall_playersから絞り込んだ「残りの全員」の方が使われる、という役割分担
+
 　　ー全プレーヤーのachievementをソートして表示　set->list->sort
+all_unique = set.union(*players.values())があるので、これをそのままソートするだけです。
+sorted_all = sorted(all_unique)
+print(f"All achievements (sorted): {sorted_all}")
+
 ・イベントをフィルタリングするジェネレータを書く（actionが'run'のものだけyieldする
+「生成された大量のイベントの中から、条件に合うものだけを選んで取り出すジェネレータ」を作る
+
+("bob", "run")    ← これだけ欲しい
+("alice", "eat")  ← いらない
+("dylan", "run")  ← これだけ欲しい
+("charlie", "climb")  ← いらない
+("bob", "sleep")  ← いらない
+("alice", "run")  ← これだけ欲しい
+「フィルタリングするジェネレータ」の書き方
+
+これを実現するには、別のイベントの流れ(元となるジェネレータ)を受け取って、その中から条件に合うものだけをyieldする、新しいジェネレータを作ります。
+
+python
+def filter_run_events(events):
+    for event in events:
+        name, action = event
+        if action == "run":
+            yield event
+
+動きを追ってみる
+
+python
+gen = gen_event()  # 元の無限イベント生成器
+run_events = filter_run_events(gen)  # runだけをフィルタリングする新しいジェネレータ
+
+next(run_events)
+
 ・consume_eventを削除せずにランダムに変えるバージョンを作る
+
+def consume_event(
+        events_list: list[tuple[str, str]]
+        ) -> Generator[tuple[str, str], None, None]:
+    shuffled = random.sample(events_list, len(events_list))
+    for event in shuffled:
+        yield event
+
+def consume_event(
+        events_list: list[tuple[str, str]]
+        ) -> Generator[tuple[str, str], None, None]:
+    shuffled = events_list.copy()
+    random.shuffle(shuffled)
+    for event in shuffled:
+        yield event
+
 ・無限ジェネレータに'stop'というactionが来たら終了するよう変更
 ・comprehensionをその場で書く
 　ーdict comprehensionでscoreが平均以上のものだけ抽出
