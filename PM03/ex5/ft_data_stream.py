@@ -40,7 +40,7 @@ def main() -> None:
     print("=== Game Data Stream Processor ===")
     gen = gen_event()
 
-    for index in range(3):
+    for index in range(1):
         event = next(gen)
         print(f"Event {index} : Player {event[0]} did action {event[1]}")
 
