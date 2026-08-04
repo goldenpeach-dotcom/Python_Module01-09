@@ -13,8 +13,7 @@ def get_player_pos() -> tuple[float, float, float]:
             continue
 
         try:
-            values = [float(coord.strip()) for coord in coordinates]
-            x, y, z = values
+            x, y, z = [float(coord.strip()) for coord in coordinates]
             return (x, y, z)
         except ValueError:
             print(
