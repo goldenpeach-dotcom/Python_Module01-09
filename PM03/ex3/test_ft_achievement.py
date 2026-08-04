@@ -42,7 +42,7 @@ def main() -> None:
     print(f"All distinct achievements: {all_unique}\n")
 
     all = set(ACHIEVEMENTS)
-    nothin = all.difference(*players.values())
+    nothin = all.difference(all_unique)
     print(f"nothin is: {nothin}\n" )
     common = set.intersection(*players.values())
     print(f"Common achievements: {common}\n")
