@@ -12,11 +12,11 @@ def parse_arg(arg: str) -> tuple[str, int]:
 
     try:
         count = int(count_str)
-        if count < 0:
-            raise ValueError("Quantity can't be negative")
     except ValueError as e:
-        raise ValueError(f"Quantity error for '{name}': {e}")
+        raise ValueError(f"Quantity error for '{name}': {e}") from e
 
+    if count < 0:
+        raise ValueError(f"Quantity can't be negative for '{name}': {count}")
     return name, count
 
 
@@ -44,6 +44,7 @@ def add_item(inventory: dict[str, int], name: str, count: int) -> None:
 
 def calc_percentage(inventory: dict[str, int]) -> dict[str, float]:
     total = sum(inventory.values())
+    # Prevent division by zero
     if total == 0:
         return {name: 0.0 for name in inventory}
 
@@ -58,7 +59,7 @@ def display_percentages(percentages: dict[str, float]) -> None:
     for nm, pct in percentages.items():
         print(
             f"Item {nm} represents "
-            f"{pct: .1f}%"
+            f"{pct:.1f}%"
         )
 
 
@@ -86,7 +87,7 @@ def main() -> None:
             continue
 
     if not inventory:
-        print("no valid inventory items found.")
+        print("No valid inventory items found.")
         return
 
     print("Got inventory: ", inventory)
@@ -105,6 +106,7 @@ def main() -> None:
     percentages = calc_percentage(inventory)
     display_percentages(percentages)
 
+    #For demo: Checking how adding a new item works
     new_item = "elixir"
     new_count = 3
 
