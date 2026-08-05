@@ -18,8 +18,8 @@ ACHIEVEMENTS = {
 
 
 def gen_player_achievements() -> set[str]:
-    achievements_number = random.randint(3, 10)
-    player_achievements = set(
+    achievements_number:int = random.randint(3, 10)
+    player_achievements:set = set(
         random.sample(list(ACHIEVEMENTS), achievements_number)
         )
     return player_achievements
@@ -27,7 +27,7 @@ def gen_player_achievements() -> set[str]:
 
 def main() -> None:
     print("=== Achievement Tracker System ===\n")
-    players = {
+    players: dict[str, str] = {
         "Alice": gen_player_achievements(),
         "Bob": gen_player_achievements(),
         "Charlie": gen_player_achievements(),
@@ -38,10 +38,10 @@ def main() -> None:
         print(f"{name:8}: {ach}")
     print()
 
-    all_unique = set.union(*players.values())
+    all_unique: set[str] = set.union(*players.values())
     print(f"All distinct achievements: {all_unique}\n")
 
-    common = set.intersection(*players.values())
+    common: str = set.intersection(*players.values())
     print(f"Common achievements: {common}\n")
 
     for name, ach in players.items():

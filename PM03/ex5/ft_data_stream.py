@@ -44,7 +44,7 @@ def main() -> None:
         event = next(gen)
         print(f"Event {index} : Player {event[0]} did action {event[1]}")
 
-    events_list = []
+    events_list: list[tuple[str, str]] = []
 
     for element in range(10):
         event = next(gen)
