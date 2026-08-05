@@ -1,14 +1,14 @@
 import random
 from typing import Generator
 
-players = [
+players: tuple[str] = [
     "bob",
     "alice",
     "dylan",
     "charlie"
 ]
 
-actions = [
+actions: tuple[str] = [
     "run",
     "eat",
     "move",

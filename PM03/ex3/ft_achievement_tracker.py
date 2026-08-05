@@ -49,7 +49,7 @@ def main() -> None:
 
     for name, ach in players.items():
         others_union: set[str] = set.union(
-            *(ach for k, ach in players.items() if k != name)
+            *(other_ach for other_name, other_ach in players.items() if other_name != name)
             )
         only_this: set[str] = ach.difference(others_union)
         print(f"Only {name:8} has: {only_this}")

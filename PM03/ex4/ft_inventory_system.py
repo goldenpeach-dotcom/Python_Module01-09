@@ -48,7 +48,7 @@ def calc_percentage(inventory: dict[str, int]) -> dict[str, float]:
     if total == 0:
         return {name: 0.0 for name in inventory}
 
-    percentages = {}
+    percentages: dict[str, float] = {}
     for name, count in inventory.items():
         percentages[name] = (count / total) * 100
 
