@@ -21,7 +21,9 @@ ACHIEVEMENTS: set[str] = {
 
 
 def gen_player_achievements() -> set[str]:
-    achievements_number: int = random.randint(MIN_ACHIEVEMENTS, MAX_ACHIEVEMENTS)
+    achievements_number: int = random.randint(
+        MIN_ACHIEVEMENTS, MAX_ACHIEVEMENTS
+        )
     player_achievements: set[str] = set(
         random.sample(list(ACHIEVEMENTS), achievements_number)
         )
@@ -49,8 +51,12 @@ def main() -> None:
 
     for name, ach in players.items():
         others_union: set[str] = set.union(
-            *(other_ach for other_name, other_ach in players.items() if other_name != name)
+            *(
+                other_ach
+                for other_name, other_ach in players.items()
+                if other_name != name
             )
+        )
         only_this: set[str] = ach.difference(others_union)
         print(f"Only {name:8} has: {only_this}")
     print()

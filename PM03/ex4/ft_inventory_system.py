@@ -106,7 +106,7 @@ def main() -> None:
     percentages = calc_percentage(inventory)
     display_percentages(percentages)
 
-    #For demo: Checking how adding a new item works
+# For demo: Checking how adding a new item works
     new_item = "elixir"
     new_count = 3
 
