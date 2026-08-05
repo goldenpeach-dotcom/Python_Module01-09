@@ -1,6 +1,9 @@
 import random
 
-ACHIEVEMENTS = {
+MIN_ACHIEVEMENTS: int = 3
+MAX_ACHIEVEMENTS: int = 10
+
+ACHIEVEMENTS: set[str] = {
     "Crafting Genius",
     "Strategist",
     "World Savior",
@@ -18,8 +21,8 @@ ACHIEVEMENTS = {
 
 
 def gen_player_achievements() -> set[str]:
-    achievements_number:int = random.randint(3, 10)
-    player_achievements:set = set(
+    achievements_number: int = random.randint(MIN_ACHIEVEMENTS, MAX_ACHIEVEMENTS)
+    player_achievements: set[str] = set(
         random.sample(list(ACHIEVEMENTS), achievements_number)
         )
     return player_achievements
@@ -27,7 +30,7 @@ def gen_player_achievements() -> set[str]:
 
 def main() -> None:
     print("=== Achievement Tracker System ===\n")
-    players: dict[str, str] = {
+    players: dict[str, set[str]] = {
         "Alice": gen_player_achievements(),
         "Bob": gen_player_achievements(),
         "Charlie": gen_player_achievements(),
@@ -41,19 +44,19 @@ def main() -> None:
     all_unique: set[str] = set.union(*players.values())
     print(f"All distinct achievements: {all_unique}\n")
 
-    common: str = set.intersection(*players.values())
+    common: set[str] = set.intersection(*players.values())
     print(f"Common achievements: {common}\n")
 
     for name, ach in players.items():
-        others_union = set.union(
+        others_union: set[str] = set.union(
             *(ach for k, ach in players.items() if k != name)
             )
-        only_this = ach.difference(others_union)
+        only_this: set[str] = ach.difference(others_union)
         print(f"Only {name:8} has: {only_this}")
     print()
 
     for name, ach in players.items():
-        missing = all_unique.difference(ach)
+        missing: set[str] = all_unique.difference(ach)
         print(f"{name:8} is missing: {missing}")
     print()
 
