@@ -14,7 +14,7 @@ def main() -> None:
         name: random.randint(50, 100) for name in capitalized_players
     }
 
-    total_players = len(scores)
+    total_players: int = len(scores)
     average_score: float = (
         sum(scores.values()) / total_players if total_players > 0 else 0.0
     )
