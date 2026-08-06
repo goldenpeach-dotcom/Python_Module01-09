@@ -1,0 +1,54 @@
+ex1/ ft_archive_creation.py
+Authorized->import.sys, sys.argv, len(), open(), import(), import.typing, typing.IO, io.read(), io.write(),io.close(),print(),input()
+
+課題の概要
+・新しいアーカイブエントリを作成して、新たな保存プロトコルを確立する。
+
+・前回のコードを使用する。
+・スクリプトの最後に、以下の変更を加える。
+
+・各行の末尾に特別なアーカイブ文字（＃）を追加する
+　（例えば２０８７年対応とする？）
+・新しい内容を表示する。
+・保存先のファイル名をユーザーに入力してもらうか、何も保存しない場合は空欄のままにする。
+・ファイル名が指定された場合は、新しい内容を保存し、あたしい終了メッセージを表示する。
+・ファイルを作成するか、既に存在する場合は上書き。
+
+    lines: list[str] = content.split("\n")
+    archived_lines: list[str] = [line + "#" for line in lines]
+    new_content: str = "\n".join(archived_lines)
+    \n".join(archived_lines)
+join() は「リストの要素を、指定した文字列を間に挟みながら1つの文字列にする」処理です。"\n".join(...) なら、要素と要素の間だけに \n を挿入します。
+
+表示例
+$> python3 ft_archive_creation.py ancient_fragment.txt
+=== Cyber Archives Recovery & Preservation ===
+Accessing file 'ancient_fragment.txt'--
+[FRAGMENT 001] Digital preservation protocols established 2087
+[FRAGMENT 002] Knowledge must survive the entropy wars
+[FRAGMENT 003] Every byte saved is a victory against oblivion--
+File 'ancient_fragment.txt' closed.
+Transform data:--
+[FRAGMENT 001] Digital preservation protocols established 2087#
+[FRAGMENT 002] Knowledge must survive the entropy wars#
+[FRAGMENT 003] Every byte saved is a victory against oblivion#--
+Enter new file name (or empty):
+Not saving data.
+$> python3 ft_archive_creation.py ancient_fragment.txt
+=== Cyber Archives Recovery & Preservation ===
+Accessing file 'ancient_fragment.txt'--
+[FRAGMENT 001] Digital preservation protocols established 2087
+[FRAGMENT 002] Knowledge must survive the entropy wars
+[FRAGMENT 003] Every byte saved is a victory against oblivion--
+File 'ancient_fragment.txt' closed.
+Transform data:--
+[FRAGMENT 001] Digital preservation protocols established 2087#
+[FRAGMENT 002] Knowledge must survive the entropy wars#
+[FRAGMENT 003] Every byte saved is a victory against oblivion#--
+Enter new file name (or empty): new_fragment.txt
+Saving data to 'new_fragment.txt'
+Data saved in file 'new_fragment.txt'.
+$> cat new_fragment.txt
+[FRAGMENT 001] Digital preservation protocols established 2087#
+[FRAGMENT 002] Knowledge must survive the entropy wars#
+[FRAGMENT 003] Every byte saved is a victory against oblivion#

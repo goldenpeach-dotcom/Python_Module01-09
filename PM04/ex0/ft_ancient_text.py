@@ -21,12 +21,7 @@ def main() -> None:
         print("---\n")
         print(content)
         print("\n---")
-    except (
-        FileNotFoundError,
-        PermissionError,
-        IsADirectoryError,
-        UnicodeDecodeError
-    ) as e:
+    except (OSError, UnicodeDecodeError) as e:
         print(f"Error opening file {file_name}: {e}")
         return
     finally:
