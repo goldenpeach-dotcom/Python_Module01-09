@@ -4,15 +4,7 @@ import sys
 import typing
 
 
-def main() -> None:
-    if len(sys.argv) != 2:
-        print("Usage: ft_ancient_text.py <file>")
-        return
-
-    file_name: str = sys.argv[1]
-    print("=== Cyber Archives Recovery & Preservation ===")
-    print(f"Accessing file '{file_name}'")
-
+def read_file(file_name: str) -> str | None:
     f: typing.IO[str] | None = None
     content: str = ""
 
@@ -27,20 +19,52 @@ def main() -> None:
         UnicodeDecodeError
     ) as e:
         print(f"Error    opening file {file_name}: {e}")
-        return
+        return None
     finally:
         if f is not None:
             f.close()
             print(f"File '{file_name}' closed.")
+    return content
 
-    # Transform data + #
+
+def archive_content(content: str) -> str:
     lines: list[str] = content.split("\n")
     archived_lines: list[str] = [
         line + "#"
         for line in lines
     ]
-    new_content: str = "\n".join(archived_lines)
+    return "\n".join(archived_lines)
 
+
+def save_file(f_name: str, content: str) -> None:
+    out: typing.IO[str] | None = None
+    try:
+        out = open(f_name, "w")
+        out.write(content)
+        print(f"Data saved in file '{f_name}.")
+    except OSError as e:
+        print(f"Error saving file: '{f_name}': {e}")
+    finally:
+        if out is not None:
+            out.close()
+
+
+def main() -> None:
+    if len(sys.argv) != 2:
+        print("Usage: ft_ancient_text.py <file>")
+        return
+
+    file_name: str = sys.argv[1]
+    print("=== Cyber Archives Recovery & Preservation ===")
+    print(f"Accessing file '{file_name}'")
+
+    content: str | None = read_file(file_name)
+    if content is None:
+        print("Load failed.")
+        return
+
+    # Transform data + #
+    new_content: str = archive_content(content)
     print("Transform data:--")
     print(new_content)
 
@@ -51,18 +75,8 @@ def main() -> None:
     if save_name == "":
         print("Not saving data.")
         return
-    else:
-        print(f"Saving data to '{save_name}'")
-        out: typing.IO[str] | None = None
-        try:
-            out = open(save_name, "w")
-            out.write(new_content)
-            print(f"Data saved in file '{save_name}'.\n")
-        except (OSError) as e:
-            print(f"Error saving file '{save_name}': {e}")
-        finally:
-            if out is not None:
-                out.close()
+    print(f"Saving data to '{save_name}'")
+    save_file(save_name, new_content)
 
 
 if __name__ == "__main__":
