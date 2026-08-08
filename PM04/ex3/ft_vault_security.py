@@ -25,15 +25,15 @@ def main() -> None:
     print(res)
 
     print("Using 'secure_archive' to read from an inaccessible file:")
-    res: tuple[bool, str] = secure_archive("etc/master.passwd", "r", "")
+    res = secure_archive("etc/master.passwd", "r", "")
     print(res)
 
     print("Using 'secure_archive' to read from a regular file:")
-    res: tuple[bool, str] = secure_archive("ancient_fragment.txt", "r", "")
+    res = secure_archive("ancient_fragment.txt", "r", "")
     print(res)
 
     print("Using 'secure_archive' to write previous content to a new file:")
-    res: tuple[bool, str] = secure_archive(
+    res = secure_archive(
         "test.txt", "w", "aaaaaaaaaaaaaaaaaaa"
         )
     print(res)
