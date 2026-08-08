@@ -31,10 +31,11 @@ def main() -> None:
     print("Using 'secure_archive' to read from a regular file:")
     res = secure_archive("ancient_fragment.txt", "r", "")
     print(res)
+    previous_content = res[1]
 
     print("Using 'secure_archive' to write previous content to a new file:")
     res = secure_archive(
-        "test.txt", "w", "aaaaaaaaaaaaaaaaaaa"
+        "test.txt", "w", previous_content
         )
     print(res)
 
