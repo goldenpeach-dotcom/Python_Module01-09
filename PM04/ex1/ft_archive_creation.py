@@ -18,7 +18,7 @@ def read_file(file_name: str) -> str | None:
         OSError,
         UnicodeDecodeError
     ) as e:
-        print(f"Error    opening file {file_name}: {e}")
+        print(f"Error opening file {file_name}: {e}")
         return None
     finally:
         if f is not None:
@@ -33,7 +33,7 @@ def archive_content(content: str) -> str:
         line + "#"
         for line in lines
     ]
-    return "\n".join(archived_lines)
+    return "\n".join(archived_lines) + "\n"
 
 
 def save_file(f_name: str, content: str) -> None:

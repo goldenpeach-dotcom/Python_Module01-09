@@ -14,6 +14,7 @@ def read_file(file_name: str) -> str | None:
         print("---\n")
         print(content)
         print("\n---")
+
     except (
         OSError,
         UnicodeDecodeError
@@ -47,6 +48,7 @@ def save_file(f_name: str, content: str) -> None:
         print(f"Data saved in file '{f_name}'.")
     except OSError as e:
         print(f"Error saving file: '{f_name}': {e}")
+        print("Data not saved.")
     finally:
         if out is not None:
             out.close()
@@ -63,11 +65,10 @@ def main() -> None:
 
     content: str | None = read_file(file_name)
     if content is None:
-        # print("Load failed.")
         return
 
     new_content: str = archive_content(content)
-    print("Transform data:--")
+    print("Transform data:")
     print(new_content)
 
     print("Enter new file name(or empty): ", end="")

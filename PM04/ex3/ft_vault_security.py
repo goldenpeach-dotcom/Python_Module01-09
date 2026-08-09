@@ -1,6 +1,3 @@
-import typing
-
-
 def secure_archive(
     file_name: str,
     operation: str = "r",
@@ -23,18 +20,19 @@ def secure_archive(
 
 def main() -> None:
     print("=== Cyber Archives Security ===")
+    print()
     print("Using 'secure_archive' to read from a nonexistent file:")
     res: tuple[bool, str] = secure_archive("/not/existing/file", "r", "")
     print(res)
-
+    print()
     print("Using 'secure_archive' to read from an inaccessible file:")
     res = secure_archive("etc/master.passwd", "r", "")
     print(res)
-
+    print()
     print("Using 'secure_archive' to read from a regular file:")
     res = secure_archive("ancient_fragment.txt", "r", "")
     print(res)
-
+    print()
     print("Using 'secure_archive' to write previous content to a new file:")
     if res[0]:
         previous_content = res[1]
