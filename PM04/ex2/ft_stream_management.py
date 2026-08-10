@@ -37,7 +37,7 @@ def archive_content(content: str) -> str:
         line + "#"
         for line in lines
     ]
-    return "\n".join(archived_lines) + "\n"
+    return "\n".join(archived_lines)
 
 
 def save_file(f_name: str, content: str) -> None:
