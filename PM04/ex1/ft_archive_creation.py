@@ -9,7 +9,7 @@ def read_file(file_name: str) -> str | None:
     content: str = ""
 
     try:
-        f = open(file_name, "r")
+        f = open(file_name, "r", encoding="utf-8")
         content = f.read()
         print("---\n")
         print(content)
@@ -39,7 +39,7 @@ def archive_content(content: str) -> str:
 def save_file(f_name: str, content: str) -> None:
     out: typing.IO[str] | None = None
     try:
-        out = open(f_name, "w")
+        out = open(f_name, "w",encoding="utf-8")
         out.write(content)
         print(f"Data saved in file '{f_name}.")
     except OSError as e:

@@ -10,7 +10,7 @@ class MyFile:
 
     def __enter__(self) -> IO[str]:
         print("called __enter__: opening the file")
-        self.f = open(self.name, self.mode)
+        self.f = open(self.name, self.mode, encoding="utf-8")
         return self.f
 
     def __exit__(

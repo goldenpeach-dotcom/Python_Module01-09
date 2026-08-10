@@ -17,7 +17,7 @@ def main() -> None:
     content: str = ""
 
     try:
-        f = open(file_name, "r")
+        f = open(file_name, "r", encoding="utf-8")
         content = f.read()
         print("---\n")
         print(content)
@@ -55,7 +55,7 @@ def main() -> None:
         print(f"Saving data to '{save_name}'")
         out: typing.IO[str] | None = None
         try:
-            out = open(save_name, "w")
+            out = open(save_name, "w",encoding="utf-8")
             out.write(new_content)
             print(f"Data saved in file '{save_name}'.\n")
         except (OSError) as e:

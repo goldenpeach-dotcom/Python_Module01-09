@@ -5,11 +5,11 @@ def secure_archive(
 ) -> tuple[bool, str]:
     try:
         if operation == "r":
-            with open(file_name, "r") as f:
+            with open(file_name, "r", encoding="utf-8") as f:
                 result = f.read()
             return (True, result)
         elif operation == "w":
-            with open(file_name, "w") as f:
+            with open(file_name, "w", encoding="utf-8") as f:
                 f.write(content)
             return (True, "Content successfully written to file")
         else:

@@ -16,7 +16,7 @@ def main() -> None:
     f: typing.IO[str] | None = None
 
     try:
-        f = open(file_name, "r")
+        f = open(file_name, "r", encoding="utf-8")
         content: str = f.read()
         print("---\n")
         print(content)
