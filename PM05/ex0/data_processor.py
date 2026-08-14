@@ -180,8 +180,7 @@ def main() -> None:
         print(f"Log entry {rank}: {val}")
 
     processors: list[DataProcessor] = [numeric, text, log]
-    print("\nPolymorphizm check![42]")
-
+    print("\n Polymorphism check[42]")
     for p in processors:
         print(type(p).__name__, "->", p.validate(42))
 
