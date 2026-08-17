@@ -1,5 +1,12 @@
+#!/usr/bin/env python3
+
 from abc import ABC, abstractmethod
 from typing import Any, Protocol
+
+
+class ExportPlugin(Protocol):
+    def process_output(self, data: list[tuple[int,str]]) -> None:
+        ...
 
 
 class DataProcessor(ABC):
@@ -129,32 +136,35 @@ class DataStream:
             )
 
     def output_pipeline(self, nb:int, plugin:ExportPlugin) -> None:
-        collected: list[tuple[int,str]] = []
         for proc in self.processors:
+            collected: list[tuple[int,str]] = []
             for _ in range(nb):
-                collected.append(proc.output())
-        plugin.process_output(colected)
+                try:
+                    collected.append(proc.output())
+                except IndexError:
+                    break
 
-class ExportPlugin(Protocol):
-    def process_output(self, data: list[tuple[int,str]]) -> None:
+            plugin.process_output(collected)
+
 
 class CSVPlugin:
-    def process_output(self, data: list[tuplt[int,str]]) -> None:
-        print(
-            "CSV Output: \n
-            ", ",".join(text for _, text in data)
-        )
+    def process_output(self, data: list[tuple[int,str]]) -> None:
+        print("CSV Output:")
+        print(", ".join(text for _, text in data))
+
 
 class JSONPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
         obj = {f"item_{rank}": text for rank, text in data}
-        print("JSON Output: ", obj)
+        print("JSON Output: ")
+        print(obj)
 
 
 def main() -> None:
     print("=== Code Nexus- Data Stream ===")
 
     print("\nInitialize Data Stream...")
+    print()
 
     stream = DataStream()
     stream.print_processors_stats()
@@ -173,60 +183,51 @@ def main() -> None:
 
     batch = [
         'Hello world',
-        [3.14,-1, 2.71],
-        [{'log_level': 'WARNING', '
-        log_message': 'Telnet access! Use ssh instead'},
-        {'log_level': 'INFO', 'log_message': 'User wil is
-        connected'}
+        [3.14, -1, 2.71],
+        [
+            {'log_level': 'WARNING',
+            'log_message': 'Telnet access! Use ssh instead'},
+            {'log_level': 'INFO',
+            'log_message': 'User wil is connected'}
         ],
         42,
         ['Hi', 'five'],
     ]
 
-    print(f"Send first batch of data on stream: {batch}")
+    print(f"\nSend first batch of data on stream: {batch}")
     stream.process_stream(batch)
     stream.print_processors_stats()
 
-    print("Send 3 processed data from each processor to a CSV plugin.")
-    for _ in range(3)
-        CSVPlugin.process_output(batch)
-
+    print("\nSend 3 processed data from each processor to a CSV plugin.")
+    plugin: ExportPlugin = CSVPlugin()
+    stream.output_pipeline(3, plugin)
+    
     stream.print_processors_stats()
 
-    print("")
-
-    print("Send another batch of data: ")
 
     batch2 = [
         21,
         ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
-        [{'log_level': 'ERROR', 'log_message': '500 server crash'},
-        {'log_level': 'NOTICE', 'log_message': 'Certificate
-        expires in 10 days'}
+        [
+            {'log_level': 'ERROR',
+            'log_message': '500 server crash'},
+            {'log_level': 'NOTICE',
+            'log_message': 'Certificateexpires in 10 days'}
         ],
         [32, 42, 64, 84, 128, 168],
         'World hello'
     ]
 
+    print(f"\nSend another batch of data: {batch2}\n")
     stream.process_stream(batch2)
     stream.print_processors_stats()
 
-    print("")
+    print()
 
-    print("Send 3 processed data from each processor to a CSV plugin.")
-    
-    print(
-        "Consume some elements from the data processors: "
-        "Numeric 3, Text 2, Log 1"
-    )
-
-    for _ in range(3):
-        numeric.output()
-    for _ in range(2):
-        text.output()
-    for _ in range(1):
-        log.output()
-
+    print("Send 5 processed data from each processor to a JSON plugin.")
+    plugin = JSONPlugin()
+    stream.output_pipeline(5, plugin)
+    print()
     stream.print_processors_stats()
 
 
