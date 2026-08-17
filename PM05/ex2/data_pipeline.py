@@ -163,15 +163,14 @@ class JSONPlugin:
 def main() -> None:
     print("=== Code Nexus- Data Stream ===")
 
-    print("\nInitialize Data Stream...")
-    print()
+    print("\nInitialize Data Stream...\n")
 
     stream = DataStream()
     stream.print_processors_stats()
 
     print()
 
-    print("Registering Processors\n")
+    print("\nRegistering Processors\n")
 
     numeric = NumericProcessor()
     text = TextProcessor()
@@ -199,9 +198,8 @@ def main() -> None:
     stream.print_processors_stats()
 
     print("\nSend 3 processed data from each processor to a CSV plugin.")
-    plugin: ExportPlugin = CSVPlugin()
-    stream.output_pipeline(3, plugin)
-    
+    stream.output_pipeline(3, CSVPlugin())
+
     stream.print_processors_stats()
 
 
@@ -212,7 +210,7 @@ def main() -> None:
             {'log_level': 'ERROR',
             'log_message': '500 server crash'},
             {'log_level': 'NOTICE',
-            'log_message': 'Certificateexpires in 10 days'}
+            'log_message': 'Certifi cateexpires in 10 days'}
         ],
         [32, 42, 64, 84, 128, 168],
         'World hello'
@@ -225,8 +223,7 @@ def main() -> None:
     print()
 
     print("Send 5 processed data from each processor to a JSON plugin.")
-    plugin = JSONPlugin()
-    stream.output_pipeline(5, plugin)
+    stream.output_pipeline(5, JSONPlugin())
     print()
     stream.print_processors_stats()
 
