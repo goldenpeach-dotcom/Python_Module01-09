@@ -93,3 +93,91 @@ JSON Output:
 JSON Output:
   Log → 5件
 ```
+
+                <<abstract>>
+              +------------------+
+              |  DataProcessor   |
+              +------------------+
+              | - rank: int      |
+              | - data: list     |
+              +------------------+
+              | + validate()     |  <<abstract>>
+              | + ingest()       |  <<abstract>>
+              | + output()       |
+              | + count_rank()   |
+              +------------------+
+                     ▲
+     ┌───────────────┼────────────────┐
+     │               │                │
+     │               │                │
++----------------+  +----------------+  +----------------+
+| NumericProcessor | | TextProcessor | | LogProcessor   |
++----------------+  +----------------+  +----------------+
+| (inherits rank,   | (inherits rank,   | (inherits rank,
+|  data, methods)   |  data, methods)   |  data, methods)|
++----------------+  +----------------+  +----------------+
+| + validate()    | | + validate()    | | + validate()    |
+| + ingest()      | | + ingest()      | | + ingest()      |
++----------------+  +----------------+  +----------------+
+
+# DataStreamの構造
+
++------------------+
+|   DataStream     |
++------------------+
+| - processors:    |
+|     list[DataProcessor] |
++------------------+
+| + register_processor()  |
+| + process_stream()      |
+| + print_processors_stats() |
+| + output_pipeline(nb, plugin) |
++------------------+
+                |
+                | uses
+                ▼
+        +------------------+
+        |  ExportPlugin    |  <<Protocol>>
+        +------------------+
+        | + process_output() |
+        +------------------+
+                ▲
+     ┌──────────┼───────────┐
+     │          │           │
++--------------+ +--------------+
+|  CSVPlugin   | | JSONPlugin   |
++--------------+ +--------------+
+| + process_output() | + process_output() |
++--------------+ +--------------+
+
+# 全体像
+
+                         +------------------+
+                         |  ExportPlugin    | <<Protocol>>
+                         +------------------+
+                         | + process_output() |
+                         +------------------+
+                           ▲            ▲
+                           │            │
+                  +--------------+  +--------------+
+                  |  CSVPlugin   |  | JSONPlugin   |
+                  +--------------+  +--------------+
+                  | + process_output() |
+                  +--------------+
++------------------+       uses         +------------------+
+|   DataStream     |------------------->|  DataProcessor   | <<abstract>>
++------------------+                    +------------------+
+| - processors     |                    | + validate()     |
+| + process_stream |                    | + ingest()       |
+| + output_pipeline|                    | + output()       |
++------------------+                    | + count_rank()   |
+                                        +------------------+
+                                             ▲     ▲     ▲
+                                             │     │     │
+                                             │     │     │
+                                   +----------------+  +----------------+  +----------------+
+                                   | NumericProcessor | | TextProcessor | | LogProcessor   |
+                                   +----------------+  +----------------+  +----------------+
+                                   | + validate()    | | + validate()    | | + validate()    |
+                                   | + ingest()      | | + ingest()      | | + ingest()      |
+                                   +----------------+  +----------------+  +----------------+

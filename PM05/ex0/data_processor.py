@@ -39,7 +39,6 @@ class NumericProcessor(DataProcessor):
             )
         return False
 
-    # 引数の型ヒントを要件（単体またはリスト）に合わせ、戻り値は None にします
     def ingest(self, data: int | float | list[int | float]) -> None:
         if not self.validate(data):
             raise ValueError("Improper numeric data")
@@ -120,10 +119,6 @@ def main() -> None:
     # (This will leave a mypy warning on purpose)
     print("Test invalid ingestion of string 'foo' without prior validation:")
     try:
-        # mypy はここに
-        # 「Argument 1 to "ingest" of "NumericProcessor"
-        # has incompatible type "str"」
-        # と警告を出します（意図通り）
         numeric.ingest("foo")
     except ValueError as e:
         print(f"Got exception: {e}")
