@@ -10,11 +10,11 @@ class DataProcessor(ABC):
 
     @abstractmethod
     def validate(self, data: Any) -> bool:
-        pass
+        ...
 
     @abstractmethod
     def ingest(self, data: Any) -> None:
-        pass
+        ...
 
     def output(self) -> tuple[int, str]:
         if not self.data:
@@ -178,13 +178,6 @@ def main() -> None:
     print("\n Polymorphism check[42]")
     for p in processors:
         print(type(p).__name__, "->", p.validate(42))
-
-    try:
-        print("抽象クラスのインスタンス化")
-        dp = DataProcessor()
-    except TypeError as e:
-        print (f"TypeError!! {e}")
-        return
 
 
 if __name__ == "__main__":
