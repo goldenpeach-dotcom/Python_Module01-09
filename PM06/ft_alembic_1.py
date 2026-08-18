@@ -1,0 +1,1 @@
+、from ... import ... 構文を使用して elements.py に直接アクセスし、water を作成

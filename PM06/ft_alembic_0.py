@@ -1,0 +1,1 @@
+import構文を利用して、element.pyに直接アクセスし、fireを作成
