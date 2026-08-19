@@ -36,6 +36,7 @@ def consume_event(
         # [:] を左辺に付けることで「同じオブジェクトの中身をまるごと置き換える」
 #         言語リファレンス(詳細な仕様)
 # 6.3.4. スライス表記(Slicings) — [:] や [a:b] [a:b:c] の正式な文法・意味が定義されています
+# https://docs.python.org/ja/3/reference/expressions.html#slicings
         events_list[:] = events_list[:idx] + events_list[idx+1:]
         # 元のコード
         # events_list = events_list.pop(0)
