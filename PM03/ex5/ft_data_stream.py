@@ -32,7 +32,13 @@ def consume_event(
         ) -> Generator[tuple[str, str], None, None]:
     while events_list:
         idx = random.randrange(len(events_list))
-        list_remain = events_list.pop(idx)
+        list_remain = events_list[idx]
+        # [:] を左辺に付けることで「同じオブジェクトの中身をまるごと置き換える」
+#         言語リファレンス(詳細な仕様)
+# 6.3.4. スライス表記(Slicings) — [:] や [a:b] [a:b:c] の正式な文法・意味が定義されています
+        events_list[:] = events_list[:idx] + events_list[idx+1:]
+        # 元のコード
+        # events_list = events_list.pop(0)
         yield list_remain
 
 
