@@ -1,2 +1,3 @@
-alchemyモジュールを部分的にインポートするために役立つもの
-ft_alembic_4.py を参照
+from .elements import create_air
+
+__all__ = ["create_air"]
