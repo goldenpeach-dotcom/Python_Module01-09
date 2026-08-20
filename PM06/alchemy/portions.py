@@ -1,3 +1,6 @@
+from .elements import create_air, create_earth
+from elements import create_fire, create_water
+
 def healing_potion() -> str:
     return  (
         "Healing potion brewed with "
@@ -13,3 +16,5 @@ def strength_potion() -> str:
     )
 
 #  3"nything else useful to access the four fundamental elements.
+# from .element import ...(相対インポート)
+# from element import ...(絶対インポート)
