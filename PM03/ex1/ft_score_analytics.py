@@ -20,9 +20,11 @@ def check_scores(args_lst: list[str]) -> list[int]:
     invalid: list[str] = []
     for s in args_lst[1:]:
         try:
-            valid.append(int(s))
+            # valid.append(int(s))
+            valid = valid + [int(s)]
         except ValueError:
-            invalid.append(s)
+            # invalid.append(s)
+            invalid = invalid + [s]
             print(f"Invalid parameter: '{s}'")
 
     if not valid:
