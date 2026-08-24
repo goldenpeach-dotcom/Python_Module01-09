@@ -1,4 +1,4 @@
-from .dark_validator import validate_dark_ingredients
+from .dark_validator import validate_ingredients
 
 
 def dark_spell_allowed_ingredients() -> list[str]:
@@ -6,7 +6,7 @@ def dark_spell_allowed_ingredients() -> list[str]:
 
 
 def dark_spell_record(spell_name: str, ingredients: str) -> str:
-    validation = validate_dark_ingredients(ingredients)
+    validation = validate_ingredients(ingredients)
 
     if "INVALID" in validation:
         return f"Spell rejected: {spell_name} ({ingredients} - INVALID)"
