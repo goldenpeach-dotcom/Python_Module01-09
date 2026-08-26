@@ -11,7 +11,3 @@ print(
     f"Testing heal alias: "
     f"{alchemy.heal()}"
 )
-
-# heal()
-
-# need to improve __init__.py
