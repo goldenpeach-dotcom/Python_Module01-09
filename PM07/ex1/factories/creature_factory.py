@@ -1,4 +1,5 @@
-from ABC import abc, abstractmethod
+from abc import ABC, abstractmethod
+from ex0.creatures.creature import Creature
 
 class Creature(ABC):
     def __init__(self, name: str, type_: str) -> None:

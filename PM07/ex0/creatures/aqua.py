@@ -1,16 +1,15 @@
-from .creature import Creature
+from ex0.creatures.creature import Creature
 
-class Aquqbub(Creature):
+class Aquabub(Creature):
     def __init__(self):
         super().__init__("Aquabub", "Water")
 
     def attack(self) -> str:
-        return "Aquabub uses Water Gun!"
+        return f"{self.name} uses Water Gun!"
 
-
-class Tyragon(Creature):
-     def __init__(self):
-        super().__init__("Tyragon", "Water")
+class Torragon(Creature):
+    def __init__(self):
+        super().__init__("Torragon", "Water/Flying")
 
     def attack(self) -> str:
-        return "Torragon uses Hydro Pump!"
+        return f"{self.name} uses Hydro Pump!"
