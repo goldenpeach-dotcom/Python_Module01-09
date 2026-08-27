@@ -1,0 +1,36 @@
+.
+├── battle.py
+├── capacitor.py
+├── ex0
+│   ├── __init__.py
+│   ├── creatures
+│   │   ├── __init__.py
+│   │   ├── aqua.py
+│   │   ├── creature.py
+│   │   └── flame.py
+│   └── factories
+│       ├── __init__.py
+│       ├── aqua_factory.py
+│       ├── creature_factory.py
+│       └── flame_factory.py
+├── ex1
+│   ├── __init__.py
+│   ├── creatures
+│   │   ├── heal.py
+│   │   └── transform.py
+│   └── factories
+│       ├── aqua_factory.py
+│       ├── creature_factory.py
+│       ├── flame_factory.py
+│       ├── healing_creature_factory.py
+│       ├── transform_creature_factory.py
+├── ex2
+│   ├── __init__.py
+│   └── strategies
+│       ├── aggressive_strategy.py
+│       ├── battle_strategy.py
+│       ├── defensive_strategy.py
+│       └── normal_strategy.py
+└── tournemant.py
+
+8 directories, 27 files

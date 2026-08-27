@@ -1,4 +1,6 @@
-from .creature_factory import *
+from ex0.factories.creature_factory import CreatureFactory
+from .factories import HealingCreatureFactory, TransformCreatureFactory
+
 
 __all__ = [
     "FlameFactory",
@@ -6,3 +8,4 @@ __all__ = [
     "HealingCreatureFactory",
     "TransformCreatureFactory"
 ]
+

@@ -1,6 +1,7 @@
 from .creature_factory import CreatureFactory
-from ex0.creatures.creature import Creature
-from ex0.creatures.aqua import Aquabub, Torragon
+from ..creatures.creature import Creature
+from ..creatures.aqua import Aquabub, Torragon
+
 
 class AquaFactory(CreatureFactory):
 

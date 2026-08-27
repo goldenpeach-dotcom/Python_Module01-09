@@ -1,10 +1,6 @@
 from ex0.factories import FlameFactory, AquaFactory
 from ex0.factories.creature_factory import CreatureFactory
 
-# test the ex0
-# Instantiate the Flameling and Aquabub factories
-# Use a singgle function that receives a factory object and verifies that it can create the base and evevolved Creature ,and then each Creature can be described and can attack
-# Another function that receives both factories and makes base Creature fight
 
 def test_factory(factory: CreatureFactory) -> None:
     print("Testing factory")
@@ -16,7 +12,7 @@ def test_factory(factory: CreatureFactory) -> None:
     print(evolved.attack())
 
 
-def test_battle(factory1: CreatureFactory, factory2: CreatureFactory):
+def test_battle(factory1: CreatureFactory, factory2: CreatureFactory) -> None:
     print("Testing battle")
     creature1 = factory1.create_base()
     creature2 = factory2.create_base()
@@ -40,3 +36,8 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# test the ex0
+# Instantiate the Flameling and Aquabub factories
+# Use a singgle function that receives a factory object and verifies that it can create the base and evevolved Creature ,and then each Creature can be described and can attack
+# Another function that receives both factories and makes base Creature fight
