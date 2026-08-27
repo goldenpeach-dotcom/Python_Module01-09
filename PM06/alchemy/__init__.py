@@ -9,4 +9,4 @@ __all__ = ["create_air", "strength_potion", "heal", "transmutation", "lead_to_go
 
 # __all__公開インターフェース　ここに定義されたものは公開される。
 # __all__がなければ、__init__.py内で定義された名前が公開されていることになる。
-# alchemy/__init__.py
+# alchemy/__init__.pyの__all__にlead_to_gold
