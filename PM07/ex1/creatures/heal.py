@@ -22,7 +22,7 @@ class Sproutling(Creature, HealCapability):
         return f"{self.name} heals itself for a small amount"
 
 
-class Bloomelle(Creature):
+class Bloomelle(Creature, HealCapability):
     def __init__(self) -> None:
         super().__init__("Bloomelle", " Grass/Fairy")
 
