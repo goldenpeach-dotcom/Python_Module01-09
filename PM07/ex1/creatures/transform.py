@@ -1,18 +1,16 @@
 from ex0.creatures.creature import Creature
 from abc import ABC, abstractmethod
 
-class TransformCapability(ABC):
 
+class TransformCapability(ABC):
     def __init__(self) -> None:
         self.transformed: bool = False
 
     @abstractmethod
-    def transform(self) -> str:
-        ...
+    def transform(self) -> str: ...
 
     @abstractmethod
-    def revert(self) -> str:
-        ...
+    def revert(self) -> str: ...
 
 
 class Shiftling(Creature, TransformCapability):
@@ -21,7 +19,7 @@ class Shiftling(Creature, TransformCapability):
         TransformCapability.__init__(self)
 
     def attack(self) -> str:
-        if self.transformed == False:
+        if self.transformed is False:
             return f"{self.name} attacks normally"
         else:
             return f"{self.name} performs a boosted strike!"
@@ -41,7 +39,7 @@ class Morphagon(Creature, TransformCapability):
         TransformCapability.__init__(self)
 
     def attack(self) -> str:
-        if self.transformed == False:
+        if self.transformed is False:
             return f"{self.name} attacks normally"
         else:
             return f"{self.name} unleashes a devastating morph strike!"

@@ -4,9 +4,8 @@ from ..creatures.aqua import Aquabub, Torragon
 
 
 class AquaFactory(CreatureFactory):
-
     def create_base(self) -> Creature:
         return Aquabub()
 
-    def create_evolved(self)-> Creature:
+    def create_evolved(self) -> Creature:
         return Torragon()
