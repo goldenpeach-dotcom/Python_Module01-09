@@ -1,17 +1,5 @@
 from ex0.creatures.creature import Creature
-from abc import ABC, abstractmethod
-
-
-class TransformCapability(ABC):
-
-    def __init__(self) -> None:
-        self.transformed: bool = False
-
-    @abstractmethod
-    def transform(self) -> str: ...
-
-    @abstractmethod
-    def revert(self) -> str: ...
+from .transform_capability import TransformCapability
 
 
 class Shiftling(Creature, TransformCapability):

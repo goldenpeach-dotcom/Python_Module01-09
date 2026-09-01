@@ -1,14 +1,6 @@
 from ex0.creatures.creature import Creature
-from abc import ABC, abstractmethod
-
-
-class HealCapability(ABC):
-    def __init__(self, target: str) -> None:
-        self.target = target
-
-    @abstractmethod
-    def heal(self) -> str:
-        ...
+from .heal_capability import HealCapability
+# from .transform_capability import TransformCapability
 
 
 class Sproutling(Creature, HealCapability):

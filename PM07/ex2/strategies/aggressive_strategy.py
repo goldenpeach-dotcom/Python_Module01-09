@@ -1,5 +1,5 @@
 from ex0.creatures.creature import Creature
-from ex1.creatures.transform import TransformCapability
+from ex1.creatures.transform_capability import TransformCapability
 from .battle_strategy import BattleStrategy
 import typing
 

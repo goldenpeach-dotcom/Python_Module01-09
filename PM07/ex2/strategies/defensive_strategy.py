@@ -1,5 +1,5 @@
 from ex0.creatures.creature import Creature
-from ex1.creatures.heal import HealCapability
+from ex1.creatures.heal_capability import HealCapability
 # from .invalid_strategy_error import InvalidStrategyError
 from .battle_strategy import BattleStrategy
 import typing

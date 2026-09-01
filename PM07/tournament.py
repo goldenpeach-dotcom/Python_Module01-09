@@ -10,6 +10,7 @@ from ex2.strategies import (
     DefensiveStrategy,
     InvalidStrategyError,
 )
+import typing
 
 Opponent = tuple[CreatureFactory, BattleStrategy]
 
@@ -18,7 +19,7 @@ def test_tournament(opponents: list[Opponent]) -> None:
     print("*** Tournament ***")
     print(f"{len(opponents)} opponents involved")
 
-    fighters = []
+    fighters: list[tuple[typing.Any, BattleStrategy]] = []
     for factory, strategy in opponents:
         fighters.append((factory.create_base(), strategy))
 
@@ -35,9 +36,9 @@ def test_tournament(opponents: list[Opponent]) -> None:
             print(" now fight!")
 
             try:
-                messages = (
-                    first_strategy.act(first) + second_strategy.act(second)
-                )
+                msg1 = first_strategy.act(first)
+                msg2 = second_strategy.act(second)
+                messages: list[str] = msg1 + msg2
             except InvalidStrategyError as error:
                 print(f"Battle error, aborting tournament: {error}")
                 return
@@ -53,6 +54,7 @@ def main() -> None:
     transform = TransformCreatureFactory()
 
     normal = NormalStrategy()
+    print("DEBUG main: type(normal) =", type(normal), "id=", id(normal))
     aggressive = AggressiveStrategy()
     defensive = DefensiveStrategy()
 
