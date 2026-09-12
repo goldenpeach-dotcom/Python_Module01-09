@@ -21,7 +21,7 @@ class Bloomelle(Creature, HealCapability):
     def attack(self) -> str:
         return f"{self.name} uses Petal Dance!"
 
-    def heal(self, target:typing.Optional[Creature] = None) -> str:
+    def heal(self, target: typing.Optional[Creature] = None) -> str:
         if target is None:
-            return f"{self.name} heals itself for a large amount"
+            return f"{self.name} heals itself and others for a large amount"
         return f"{self.name} heals {target.name} and itself for a large amount"
