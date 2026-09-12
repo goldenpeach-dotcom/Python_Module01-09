@@ -12,17 +12,17 @@ from ex2.strategies import (
 
 # --- DefensiveStrategy ---
 
-def test_defensive_valid_with_healer():
+def test_defensive_valid_with_healer() -> None:
     creature = HealingCreatureFactory().create_base()
     assert DefensiveStrategy().is_valid(creature) is True
 
 
-def test_defensive_invalid_without_heal():
+def test_defensive_invalid_without_heal() -> None:
     creature = FlameFactory().create_base()
     assert DefensiveStrategy().is_valid(creature) is False
 
 
-def test_defensive_act_order_and_content():
+def test_defensive_act_order_and_content() -> None:
     strategy = DefensiveStrategy()
     creature = HealingCreatureFactory().create_base()
 
@@ -33,7 +33,7 @@ def test_defensive_act_order_and_content():
     assert result == [reference.attack(), reference.heal()]
 
 
-def test_defensive_act_raises_on_invalid():
+def test_defensive_act_raises_on_invalid() -> None:
     creature = FlameFactory().create_base()
     with pytest.raises(InvalidStrategyError) as exc_info:
         DefensiveStrategy().act(creature)
@@ -42,17 +42,17 @@ def test_defensive_act_raises_on_invalid():
 
 # --- AggressiveStrategy ---
 
-def test_aggressive_valid_with_transformer():
+def test_aggressive_valid_with_transformer() -> None:
     creature = TransformCreatureFactory().create_base()
     assert AggressiveStrategy().is_valid(creature) is True
 
 
-def test_aggressive_invalid_without_transform():
+def test_aggressive_invalid_without_transform() -> None:
     creature = FlameFactory().create_base()
     assert AggressiveStrategy().is_valid(creature) is False
 
 
-def test_aggressive_act_order_transform_attack_revert():
+def test_aggressive_act_order_transform_attack_revert() -> None:
     strategy = AggressiveStrategy()
     creature = TransformCreatureFactory().create_base()
 
@@ -66,7 +66,7 @@ def test_aggressive_act_order_transform_attack_revert():
     assert result[1] == check_creature.attack()
 
 
-def test_aggressive_act_raises_on_invalid():
+def test_aggressive_act_raises_on_invalid() -> None:
     creature = FlameFactory().create_base()
     with pytest.raises(InvalidStrategyError):
         AggressiveStrategy().act(creature)
@@ -74,12 +74,12 @@ def test_aggressive_act_raises_on_invalid():
 
 # --- NormalStrategy ---
 
-def test_normal_is_valid_always_true():
+def test_normal_is_valid_always_true() -> None:
     creature = FlameFactory().create_base()
     assert NormalStrategy().is_valid(creature) is True
 
 
-def test_normal_act_returns_attack_only():
+def test_normal_act_returns_attack_only() -> None:
     strategy = NormalStrategy()
     creature = FlameFactory().create_base()
 

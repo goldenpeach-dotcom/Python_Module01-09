@@ -1,3 +1,4 @@
+from ex0.creatures.creature import Creature
 from ex0 import CreatureFactory
 from ex0 import FlameFactory
 from ex0 import AquaFactory
@@ -10,7 +11,7 @@ from ex2.strategies import (
     DefensiveStrategy,
     InvalidStrategyError,
 )
-import typing
+
 
 Opponent = tuple[CreatureFactory, BattleStrategy]
 
@@ -19,7 +20,7 @@ def test_tournament(opponents: list[Opponent]) -> None:
     print("*** Tournament ***")
     print(f"{len(opponents)} opponents involved")
 
-    fighters: list[tuple[typing.Any, BattleStrategy]] = []
+    fighters: list[tuple[Creature, BattleStrategy]] = []
     for factory, strategy in opponents:
         fighters.append((factory.create_base(), strategy))
 

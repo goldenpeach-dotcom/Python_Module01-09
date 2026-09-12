@@ -1,3 +1,35 @@
+＜パッケージ全体の構造＞
+PM07/
+├── ex0/
+│   ├── creatures/→ 基本クリーチャー
+│   │     ├── creature.py
+│   │     ├── flame.py
+│   │     └── aqua.py
+│   └── factories/→ 基本クリーチャーを作る Factory
+│         ├── creature_factory.py
+│         ├── flame_factory.py
+│         └── aqua_factory.py
+│
+├── ex1/
+│   ├── creatures/→ 能力付きクリーチャー（Heal / Transform）
+│   │     ├── heal.py
+│   │     └── transform.py
+│   └── factories/→ 能力付きクリーチャーを作る Factory
+│         ├── healing_factory.py
+│         └── transform_factory.py
+│
+├── ex2/
+│   └── strategies/→ 戦闘ロジック（Strategy パターン）
+│         ├── battle_strategy.py
+│         ├── normal_strategy.py
+│         ├── aggressive_strategy.py
+│         ├── defensive_strategy.py
+│         └── invalid_strategy_error.py
+│
+├── battle.py        ← ex0.creatures が内部で使う → 戦闘処理（Strategy が使う）
+├── capacitor.py     ← ex1.creatures が内部で使う→ 能力の内部処理（Transform など）
+└── tournamant.py    ← Factory × Strategy を使う→ トーナメント実行（Factory × Strategy）
+
 .
 ├── battle.py
 ├── capacitor.py
@@ -16,21 +48,126 @@
 ├── ex1
 │   ├── __init__.py
 │   ├── creatures
+│   │   ├── __init__.py
 │   │   ├── heal.py
 │   │   └── transform.py
 │   └── factories
-│       ├── aqua_factory.py
-│       ├── creature_factory.py
-│       ├── flame_factory.py
-│       ├── healing_creature_factory.py
-│       ├── transform_creature_factory.py
+│       ├── __init__.py
+│       ├── healing_factory.py
+│       └── transform_factory.py
 ├── ex2
 │   ├── __init__.py
 │   └── strategies
+│       ├── __init__.py
 │       ├── aggressive_strategy.py
 │       ├── battle_strategy.py
 │       ├── defensive_strategy.py
+│       ├── invalid_strategy_error.py
 │       └── normal_strategy.py
-└── tournemant.py
+└── tournamant.py
 
-8 directories, 27 files
+＜トップレベルの依存関係＞
+tournamant.py
+    ├── ex0.factories (FlameFactory, AquaFactory)
+    ├── ex1.factories (HealingCreatureFactory, TransformCreatureFactory)
+    └── ex2.strategies (Normal, Aggressive, Defensive)
+
+
+
+＜Factory->Creatureの関連図＞
+ex0.factories/
+    ├── CreatureFactory
+    │     └── create_base() → Creature（抽象）
+    ├── FlameFactory
+    │     └── create_base() → Flameling
+    └── AquaFactory
+          └── create_base() → Aquabub
+
+ex1.factories/
+    ├── HealingCreatureFactory
+    │     └── create_base() → HealCreature
+    └── TransformCreatureFactory
+          └── create_base() → TransformCreature
+
+Factory は「どの Creature を作るか」を決めるだけ。
+tournamant.py は Factory を使って クリーチャーの実体を生成する。
+
+＜Strategy -> act()の関係図＞
+ex2.strategies/
+    ├── BattleStrategy (抽象)
+    │
+    ├── NormalStrategy
+    │     └── act(creature) → メッセージ一覧
+    ├── AggressiveStrategy
+    │     └── act(creature) → メッセージ一覧
+    ├── DefensiveStrategy
+    │     └── act(creature) → メッセージ一覧
+    └── InvalidStrategyError
+Strategy は「クリーチャーがどう戦うか」を決める。
+tournamant.py は Strategy を使って 戦闘ログを生成する。
+
+＜tournamentが使う組み合わせの図＞
+FactoryとStrategyのペアを定義
+Opponent = tuple[CreatureFactory, BattleStrategy]
+Opponent
+   ┌──────────────┬──────────────────┐
+   │ Factory       │ Strategy         │
+   ├──────────────┼──────────────────┤
+   │ FlameFactory  │ NormalStrategy   │
+   │ HealingFactory│ DefensiveStrategy│
+   │ AquaFactory   │ NormalStrategy   │
+   │ TransformFact │ AggressiveStrategy│
+   └──────────────┴──────────────────┘
+
+＜トーナメントの処理フロー＞
+test_tournament(opponents)
+    │
+    ├─ opponents = [(Factory, Strategy), ...]
+    │
+    ├─ fighters = []
+    │    for each (factory, strategy):
+    │        creature = factory.create_base()
+    │        fighters.append( (creature, strategy) )
+    │
+    ├─ 全組み合わせでバトル開始
+    │    for i in fighters:
+    │      for j in fighters (i < j):
+    │
+    │        first_creature,  first_strategy
+    │        second_creature, second_strategy
+    │
+    │        first_strategy.act(first_creature)
+    │        second_strategy.act(second_creature)
+    │
+    │        → メッセージを表示
+    │
+    └─ InvalidStrategyError が出たらトーナメント中止
+
+＜最終関係図＞
+                   ┌───────────────┐
+                   │  tournamant.py │
+                   │  (Tournament)  │
+                   └───────┬───────┘
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │ Opponent = (Factory, │
+                │             Strategy) │
+                └───────────┬──────────┘
+                            │
+        ┌───────────────────┼────────────────────┐
+        ▼                   ▼                    ▼
+┌──────────────┐   ┌────────────────┐   ┌──────────────────┐
+│ ex0.factories │   │ ex1.factories  │   │ ex2.strategies   │
+│ (Flame/Aqua)  │   │ (Heal/Transform│   │ (Normal/Agg/Def) │
+└──────┬────────┘   └──────┬─────────┘   └──────────┬──────┘
+       │                    │                        │
+       ▼                    ▼                        ▼
+┌──────────────┐   ┌────────────────┐   ┌──────────────────┐
+│ ex0.creatures │   │ ex1.creatures  │   │  ※ strategies は │
+│ (Flameling…)  │   │ (Heal…)        │   │  tournamant.pyで │
+└──────────────┘   └────────────────┘   │  直接使われる     │
+                                         └──────────────────┘
+
+※ battle.py と capacitor.py は「creatures の内部処理」であり、
+  tournamant.py からは参照されないため図から除外。
