@@ -1,0 +1,35 @@
+<sys>
+https://docs.python.org/3.10/library/sys.html
+このモジュールは、インタプリタによって使用されたり管理されたりするいくつかのオブジェクトへのアクセスや、インタプリタと強く連携する関数を提供します。
+dynamic odjects:
+    path(モジュール検索パス；path[0]はスクリプトのディレクトリ、それ以外は'')
+    print(stdout)
+static objects:
+    executable(Pythonインタープリターの実行可能バイナリの絶対パス)
+
+＜OS＞
+どのシステムにいるかによって、NT用かPosix用のOSルーチン
+'os' をインポートして使うプログラムは、異なるプラットフォーム間で移植しやすくなる可能性が高いです。
+もちろん、その場合はすべてのプラットフォームで定義されている関数（例えば unlink や opendir）だけを使い、
+パス名の操作はすべて os.path に任せる必要があります（例えば split や join）。
+https://docs.python.org/3.10/library/os.html
+os.path(posixpath or ntpath)
+
+＜site＞
+サードパーティのパッケージ用にモジュール検索パスを sys.path に追加する。
+https://docs.python.org/3.10/library/site.html
+これはモジュール検索パスにサイト固有のパスを追加します。
+Unix（Mac OSXを含む）では、sys.prefix と sys.exec_prefix（異なる場合）が最初に使われ、
+lib/python3/dist-packages が追加されます。
+他のプラットフォーム（Windowsなど）では、各プレフィックスを直接試すだけでなく、
+lib/site-packages を追加したものも試します。
+存在する場合、これらのディレクトリは sys.path に追加され、パス設定ファイルの確認にも使われます。
+
+Debian およびその派生ディストリビューションでは、この sys.path はディストリビューション内で配布されるパッケージ用のディレクトリで
+拡張されます。ローカルの追加モジュールは /usr/local/lib/python<version>/dist-packages に入ります。
+Debian の追加モジュールも同様です。
+
+    getsitepakages(すべてのグローバルな site-packages ディレクトリを含むリストを返します。
+                    ``prefixes``（またはグローバルの ``PREFIXES``）にある各ディレクトリについて、
+                    この関数はシステム環境に応じて `site-packages` サブディレクトリを見つけ、フルパスのリストを返します。)
+    

@@ -3,21 +3,21 @@ import os
 import site
 
 def main() -> None:
-    # python3
+    # python3実行ファイルの絶対パス /path/to/matrix_env/bin/python3
     python_path: str = sys.executable
-    # Virtual Environment
+    # Virtual Environment matrix_env(python_pathの末尾２階層を切り捨てて
+    # 仮想環境のフォルダ名だけを取り出す)
     virtual_environment: str = os.path.basename(
         os.path.dirname(os.path.dirname(python_path))
     ) 
-    # Environment path
+    # Environment path /path/to/matrix_env
     venv_path: str = os.path.dirname(os.path.dirname(python_path))
 
-    status: bool = False
-    # 仮想環境にいるのかどうかチェックする。フラグ立てる？
-    if sys.prefix != sys.base_prefix:
-        status = True
+    # 仮想環境にいるとbase_prefixが変更される。
+    status: bool = sys.prefix != sys.base_prefix
 
     if status:
+        # install_path サイトパッケージの場所
         install_path: str = site.getsitepackages()[0]
         stats_message: str = "Welcome to construct"
         message: str = (
