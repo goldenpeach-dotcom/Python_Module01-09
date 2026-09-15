@@ -3,23 +3,17 @@ import os
 import site
 
 def main() -> None:
-    # python3実行ファイルの絶対パス /path/to/matrix_env/bin/python3
     python_path: str = sys.executable
-    # Virtual Environment matrix_env(python_pathの末尾２階層を切り捨てて
-    # 仮想環境のフォルダ名だけを取り出す)
-    virtual_environment: str = os.path.basename(
-        os.path.dirname(os.path.dirname(python_path))
-    ) 
-    # Environment path /path/to/matrix_env
-    venv_path: str = os.path.dirname(os.path.dirname(python_path))
 
-    # 仮想環境にいるとbase_prefixが変更される。
+    venv_path: str = os.path.dirname(os.path.dirname(python_path))
+    virtual_environment: str = os.path.basename(venv_path)
+
     status: bool = sys.prefix != sys.base_prefix
 
     if status:
         # install_path サイトパッケージの場所
         install_path: str = site.getsitepackages()[0]
-        stats_message: str = "Welcome to construct"
+        stats_message: str = "Welcome to the construct"
         message: str = (
             "SUCCESS: You're in an isolated environment!\n"
             "Safe to install packages without affecting\n"
@@ -28,18 +22,17 @@ def main() -> None:
             f"{install_path}"
         )
     else:
-        stats_message: str = " You're still plugged in"
+        stats_message = " You're still plugged in"
         virtual_environment = "None Detected"
         message = (
             "WARNING: You're in the global environment!\n"
             "The machines can see everything you install.\n"
             "To enter the construct, run:\n"
-            "python-m venv matrix_env\n"
-            "source matrix_env/bin/activate # On Unix\n"
-            "matrix_env\Scripts\activate # On Windows\n"
-            "Then run this program again."
+            "python -m venv matrix_env\n"
+            "source matrix_env/activate # On Unix\n"
+            "matrix_env\\Scripts\\activate # On Windows\n"
+            "\nThen run this program again."
         )
-
 
     print(f"MATRIX STATUS: {stats_message}")
     print(f"Current Python: {python_path}")
