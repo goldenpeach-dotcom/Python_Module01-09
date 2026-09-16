@@ -45,6 +45,29 @@ def generate_matrix_data(np_module) -> Any:
     """
     return np_module.random.randn(1000)
 
+# ------------------------------------------------------------
+# requestsで外部APIからデータを取得
+# ------------------------------------------------------------
+def fetch_matrix_data(requests_module, np_module) -> Any:
+    """
+    PDF要件：
+    - 外部APIから実データを取得する場合はrequestsを使用
+    - random.org APIから真の乱数を取得してnumpy配列に変換
+    """
+    try:
+        url = "https://www.random.org/integers/?num=1000&min=-100&max=100&col=1&base=10&format=plain"
+        response = requests_module.get(url)
+        response.raise_for_status()
+        lines = response.text.strip().split("\n")
+        data = np_module.array(lines, dtype=float)
+        return data
+    except requests_module.exceptions.HTTPError as e:
+        print(f"[ERROR] API request failed: {e}")
+        return None
+    except requests_module.exceptions.RequestException as e:
+        print(f"[ERROR] Network error: {e}")
+        return None
+
 
 # ------------------------------------------------------------
 # pandas による分析
@@ -76,6 +99,21 @@ def show_dependency_instructions() -> None:
 
 
 # ------------------------------------------------------------
+# データをロードする関数
+# ------------------------------------------------------------
+def load_data(source: str, numpy, requests=None):
+    if source == "numpy":
+        return generate_matrix_data(numpy)
+
+    if source == "api":
+        if requests is None:
+            print("[WARNING] requests missing — falling back to numpy")
+            return generate_matrix_data(numpy)
+        return fetch_matrix_data(requests, numpy)
+
+    raise ValueError(f"Unknown data source: {source}")
+
+# ------------------------------------------------------------
 # メイン処理
 # ------------------------------------------------------------
 def main() -> None:
@@ -93,8 +131,13 @@ def main() -> None:
         show_dependency_instructions()
         return
 
+
     print("Analyzing Matrix data...")
-    data = generate_matrix_data(numpy)
+    source = "api"  # or "API"
+    data = load_data(source, numpy, requests)
+    if data is None:
+        raise ValueError("No data was loaded")
+
     print(f"Processing {len(data)} data points...")
 
     df, summary = analyze_data(pandas, data)
