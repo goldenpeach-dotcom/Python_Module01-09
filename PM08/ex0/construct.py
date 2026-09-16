@@ -40,7 +40,6 @@ def print_outside_venv() -> None:
         "matrix_env\Scripts\activate # On Windows\n"
         "Then run this program again."
     )
->>>>>>> 1c6249d ([mod]ex0)
     print(f"MATRIX STATUS: {stats_message}")
     print(f"Current Python: {sys.executable}")
     print(f"Virtual Environment: {virtual_environment}")
