@@ -1,18 +1,20 @@
 import os
 from dotenv import load_dotenv
 
+
 class ConfigError(Exception):
     """設定が欠落している場合の例外"""
     pass
 
-def load_config():
- 
+
+def load_config() -> dict[str, str | None]:
+
     try:
         load_dotenv()  # .env があれば読み込む
     except ConfigError as error:
         raise ConfigError(f".env loading failed: {error}")
 
-    config: dict[str, str] = {
+    config: dict[str, str | None] = {
         "mode": os.environ.get("MATRIX_MODE", "development"),
         "db": os.environ.get("DATABASE_URL"),
         "api_key": os.environ.get("API_KEY"),
@@ -31,18 +33,19 @@ def load_config():
 
     return config
 
-def security_check(config):
+
+def security_check(config: dict[str, str | None]) -> None:
     print("\nEnvironment security check:")
 
     # .env 読み込み確認
-    print(f"  - .env file loaded ............... {'OK' if config else 'FAILED'}")
+    print(f"  - .env file loaded .... {'OK' if config else 'FAILED'}")
 
     # 必須キーの存在チェック
-    print(f"  - MATRIX_MODE ..................... {'OK' if config['mode'] else 'MISSING'}")
-    print(f"  - DATABASE_URL .................... {'OK' if config['db'] else 'MISSING'}")
-    print(f"  - API_KEY ......................... {'OK' if config['api_key'] else 'MISSING'}")
-    print(f"  - LOG_LEVEL ....................... {'OK' if config['log_level'] else 'MISSING'}")
-    print(f"  - ZION_ENDPOINT ................... {'OK' if config['zion'] else 'MISSING'}")
+    print(f"  - MATRIX_MODE ...... {'OK' if config['mode'] else 'MISSING'}")
+    print(f"  - DATABASE_URL ..... {'OK' if config['db'] else 'MISSING'}")
+    print(f"  - API_KEY .......... {'OK' if config['api_key'] else 'MISSING'}")
+    print(f"  - LOG_LEVEL ...... {'OK' if config['log_level'] else 'MISSING'}")
+    print(f"  - ZION_ENDPOINT ....... {'OK' if config['zion'] else 'MISSING'}")
 
     print("  - Sensitive data from env only .... OK")
 
@@ -55,7 +58,7 @@ def security_check(config):
         print("  - Development mode checks ......... RELAXED")
 
 
-def main():
+def main() -> None:
     print("ORACLE STATUS: Reading the Matrix...")
 
     try:
@@ -65,7 +68,7 @@ def main():
         print("Oracle cannot continue. Shutting down...")
         return
 
-    print(f"Configuration loaded:")
+    print("Configuration loaded:")
     print(f"Mode: {config['mode']}")
     print(f"Database: {config['db'] or 'Connected to local instance'}")
     print(f"API Access: {'Authenticated' if config['api_key'] else 'Missing'}")
@@ -75,6 +78,7 @@ def main():
     security_check(config)
 
     print("The Oracle sees all configurations.")
+
 
 if __name__ == "__main__":
     main()
