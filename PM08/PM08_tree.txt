@@ -1,0 +1,45 @@
+.
+├── ex0
+│   └── construct.py
+├── ex1
+│   ├── loading.py
+│   ├── pyproject.toml
+│   └── requirements.txt
+├── ex2
+|   ├── oracle.py
+|   ├── .env.example
+|   └── (requirements.txt)
+└── .gitignore
+
+
+└── matrix_env
+    ├── bin
+    │   ├── Activate.ps1
+    │   ├── activate
+    │   ├── activate.csh
+    │   ├── activate.fish
+    │   ├── dotenv
+    │   ├── f2py
+    │   ├── f2py3
+    │   ├── f2py3.10
+    │   ├── fonttools
+    │   ├── idna
+    │   ├── normalizer
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.10
+    │   ├── pyftmerge
+    │   ├── pyftsubset
+    │   ├── python -> python3
+    │   ├── python3 -> /usr/bin/python3
+    │   ├── python3.10 -> python3
+    │   ├── setuptools-scm
+    │   ├── ttx
+    │   └── vcs-versioning
+    ├── include
+    ├── lib
+    │   └── python3.10
+    ├── lib64 -> lib
+    ├── pyvenv.cfg
+    └── share
+        └── man

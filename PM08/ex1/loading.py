@@ -4,7 +4,6 @@ Exercise 1 — loading.py
 Matrix Data Loading Program
 """
 
-import sys
 import importlib
 from typing import Tuple, Optional, Any
 
@@ -37,7 +36,7 @@ def check_dependency(name: str, description: str) -> Optional[Any]:
 # ------------------------------------------------------------
 # numpy によるデータ生成
 # ------------------------------------------------------------
-def generate_matrix_data(np_module) -> Any:
+def generate_matrix_data(np_module: Any) -> Any:
     """
     PDF要件：
     - データソースは numpy のみ
@@ -45,17 +44,24 @@ def generate_matrix_data(np_module) -> Any:
     """
     return np_module.random.randn(1000)
 
+
 # ------------------------------------------------------------
 # requestsで外部APIからデータを取得
 # ------------------------------------------------------------
-def fetch_matrix_data(requests_module, np_module) -> Any:
+def fetch_matrix_data(
+    requests_module: Any,
+    np_module: Any
+    ) -> Any:
     """
     PDF要件：
     - 外部APIから実データを取得する場合はrequestsを使用
     - random.org APIから真の乱数を取得してnumpy配列に変換
     """
     try:
-        url = "https://www.random.org/integers/?num=1000&min=-100&max=100&col=1&base=10&format=plain"
+        url = (
+            "https://www.random.org/integers/?num=1000&min=-100"
+            "&max=100&col=1&base=10&format=plain"
+        )
         response = requests_module.get(url)
         response.raise_for_status()
         lines = response.text.strip().split("\n")
@@ -82,7 +88,7 @@ def analyze_data(pd_module: Any, data: Any) -> Tuple[Any, Any]:
 # ------------------------------------------------------------
 # matplotlib による可視化
 # ------------------------------------------------------------
-def visualize(plt_module, df) -> None:
+def visualize(plt_module: Any, df: Any) -> None:
     fig = plt_module.figure(figsize=(8, 4))
     df["values"].plot(kind="line")
     plt_module.title("Matrix Data Analysis")
@@ -101,7 +107,7 @@ def show_dependency_instructions() -> None:
 # ------------------------------------------------------------
 # データをロードする関数
 # ------------------------------------------------------------
-def load_data(source: str, numpy, requests=None):
+def load_data(source: str, numpy: Any, requests: Any | None=None) -> Any:
     if source == "numpy":
         return generate_matrix_data(numpy)
 
@@ -113,6 +119,7 @@ def load_data(source: str, numpy, requests=None):
 
     raise ValueError(f"Unknown data source: {source}")
 
+
 # ------------------------------------------------------------
 # メイン処理
 # ------------------------------------------------------------
@@ -122,8 +129,14 @@ def main() -> None:
 
     pandas = check_dependency("pandas", "Data manipulation ready")
     numpy = check_dependency("numpy", "Numerical computation ready")
-    requests = check_dependency("requests", "Network access ready")
     matplotlib = check_dependency("matplotlib.pyplot", "Visualization ready")
+
+    use_api: bool = True  # or False
+
+    if use_api:
+        requests = check_dependency("requests", "Network access ready")
+    else:
+        requests = None
 
     # 必須依存が欠けていたら終了
     if not (pandas and numpy and matplotlib):
@@ -131,9 +144,8 @@ def main() -> None:
         show_dependency_instructions()
         return
 
-
     print("Analyzing Matrix data...")
-    source = "api"  # or "API"
+    source = "api"  # or "numpy"
     data = load_data(source, numpy, requests)
     if data is None:
         raise ValueError("No data was loaded")

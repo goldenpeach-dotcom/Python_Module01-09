@@ -37,7 +37,7 @@ def print_outside_venv() -> None:
         "To enter the construct, run:\n"
         "python-m venv matrix_env\n"
         "source matrix_env/bin/activate # On Unix\n"
-        "matrix_env\Scripts\activate # On Windows\n"
+        "matrix_env\\Scripts\\activate # On Windows\n"
         "Then run this program again."
     )
     print(f"MATRIX STATUS: {stats_message}")

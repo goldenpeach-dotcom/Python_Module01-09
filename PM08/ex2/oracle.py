@@ -9,10 +9,7 @@ class ConfigError(Exception):
 
 def load_config() -> dict[str, str | None]:
 
-    try:
-        load_dotenv()  # .env があれば読み込む
-    except ConfigError as error:
-        raise ConfigError(f".env loading failed: {error}")
+    load_dotenv()
 
     config: dict[str, str | None] = {
         "mode": os.environ.get("MATRIX_MODE", "development"),
@@ -37,8 +34,15 @@ def load_config() -> dict[str, str | None]:
 def security_check(config: dict[str, str | None]) -> None:
     print("\nEnvironment security check:")
 
-    # .env 読み込み確認
-    print(f"  - .env file loaded .... {'OK' if config else 'FAILED'}")
+    env_loaded: bool = any([
+    os.environ.get("MATRIX_MODE"),
+    os.environ.get("DATABASE_URL"),
+    os.environ.get("API_KEY"),
+    os.environ.get("LOG_LEVEL"),
+    os.environ.get("ZION_ENDPOINT"),
+    ])
+
+    print(f"  - .env file loaded .... {'OK' if env_loaded else 'FAILED'}")
 
     # 必須キーの存在チェック
     print(f"  - MATRIX_MODE ...... {'OK' if config['mode'] else 'MISSING'}")
