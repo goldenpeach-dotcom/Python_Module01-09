@@ -1,13 +1,20 @@
 import os
+import re
 from dotenv import load_dotenv
 
 
 class ConfigError(Exception):
-    """設定が欠落している場合の例外"""
     pass
 
 
 def load_config() -> dict[str, str | None]:
+
+    env_exists = os.path.exists(".env")
+
+    has_inline_env = "MATRIX_MODE" in os.environ or "API_KEY" in os.environ
+
+    if not env_exists and not has_inline_env:
+        raise ConfigError(".env file is missing and no environment variables are set.")
 
     load_dotenv()
 
@@ -23,7 +30,6 @@ def load_config() -> dict[str, str | None]:
     if missing:
         raise ConfigError(f"missing required keys: {', '.join(missing)}")
 
-    # 本番モードの stricter check
     if config["mode"] == "production":
         if not config["api_key"]:
             raise ConfigError("PRODUCTION mode needs API_KEY.")
@@ -31,35 +37,41 @@ def load_config() -> dict[str, str | None]:
     return config
 
 
-def security_check(config: dict[str, str | None]) -> None:
-    print("\nEnvironment security check:")
+def check_hardcoded_secrets(filepath="oracle.py") -> bool:
 
-    env_loaded: bool = any([
-        os.environ.get("MATRIX_MODE"),
-        os.environ.get("DATABASE_URL"),
-        os.environ.get("API_KEY"),
-        os.environ.get("LOG_LEVEL"),
-        os.environ.get("ZION_ENDPOINT"),
-    ])
+    try:
+        with open(filepath, "r") as f:
+            code = f.read()     
+            suspicious = re.findall(r'(API_KEY|SECRET|PASSWORD)\s*=\s*["\'][^"\']+["\']', code)
+        return len(suspicious) == 0
+    except (FileNotFoundError, PermissionError, OSError):
+        print(
+            f"[WARNING] could not read {filepath}"
+            "for checking hardcoded secret check"
+        )
+        return False
 
-    print(f"  - .env file loaded .... {'OK' if env_loaded else 'FAILED'}")
 
-    # 必須キーの存在チェック
-    print(f"  - MATRIX_MODE ...... {'OK' if config['mode'] else 'MISSING'}")
-    print(f"  - DATABASE_URL ..... {'OK' if config['db'] else 'MISSING'}")
-    print(f"  - API_KEY .......... {'OK' if config['api_key'] else 'MISSING'}")
-    print(f"  - LOG_LEVEL ...... {'OK' if config['log_level'] else 'MISSING'}")
-    print(f"  - ZION_ENDPOINT ....... {'OK' if config['zion'] else 'MISSING'}")
+def check_env_file_valid(required_keys: list[str], env_path=".env"):
+    """.envファイルが存在し、必須キーが揃っているかチェック"""
+    if not os.path.exists(env_path):
+        return False
+    try:
+        with open(env_path, "r") as f:
+            content = f.read()
+        return all(key in content for key in required_keys)
+    except (OSError):
+        print(f"[WARNING] could not read {env_path}")
+        return False
 
-    print("  - Sensitive data from env only .... OK")
 
-    # 本番モードの stricter check
-    if config["mode"] == "production":
-        print("  - Production mode strict checks ... ENABLED")
-        if not config["api_key"]:
-            print("    * ERROR: API_KEY is required in production!")
-    else:
-        print("  - Development mode checks ......... RELAXED")
+def check_override_works(test_key="MODE"):
+    """OS環境変数が.envより優先されるかチェック"""
+    os.environ[test_key] = "production_override_test"
+    load_dotenv(override=False)  # .envの値でOS環境変数を潰さない設定
+    result = os.environ.get(test_key) == "production_override_test"
+    return result
+
 
 
 def main() -> None:
@@ -79,9 +91,25 @@ def main() -> None:
     print(f"Log Level: {config['log_level'] or 'Missing'} ")
     print(f"Zion Network: {config['zion'] or 'Offline'}")
 
-    security_check(config)
+    # security_check(config)
 
-    print("The Oracle sees all configurations.")
+    print("Environment security check:")
+    required_keys: list[str] = [
+        "MATRIX_MODE",
+        "DATABASE_URL",
+        "API_KEY",
+        "LOG_LEVEL",
+        "ZION_ENDPOINT"
+    ]
+    print("[OK] No hardcoded secrets detected" if check_hardcoded_secrets()
+          else "[FAIL] Hardcoded secrets found!")
+    print("[OK] .env file properly configured" if check_env_file_valid(required_keys)
+          else "[FAIL] .env file missing or incomplete")
+    print("[OK] Production overrides available" if check_override_works()
+          else "[FAIL] Production overrides not working")
+
+
+    print("\nThe Oracle sees all configurations.")
 
 
 if __name__ == "__main__":
