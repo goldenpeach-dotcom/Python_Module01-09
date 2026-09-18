@@ -92,8 +92,6 @@ def main() -> None:
     print(f"Log Level: {config['log_level'] or 'Missing'} ")
     print(f"Zion Network: {config['zion'] or 'Offline'}")
 
-    # security_check(config)
-
     print("Environment security check:")
     required_keys: list[str] = [
         "MATRIX_MODE",
