@@ -41,8 +41,9 @@ def check_hardcoded_secrets(filepath="oracle.py") -> bool:
 
     try:
         with open(filepath, "r") as f:
-            code = f.read()     
-            suspicious = re.findall(r'(API_KEY|SECRET|PASSWORD)\s*=\s*["\'][^"\']+["\']', code)
+            code: str = f.read()
+            pattern: str = r'(API_KEY|SECRET|PASSWORD)\s*=\s*["\'][^"\']+["\']'
+            suspicious: list[str] = re.findall(pattern, code)
         return len(suspicious) == 0
     except (FileNotFoundError, PermissionError, OSError):
         print(
