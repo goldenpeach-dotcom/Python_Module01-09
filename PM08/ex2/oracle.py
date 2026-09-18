@@ -35,11 +35,11 @@ def security_check(config: dict[str, str | None]) -> None:
     print("\nEnvironment security check:")
 
     env_loaded: bool = any([
-    os.environ.get("MATRIX_MODE"),
-    os.environ.get("DATABASE_URL"),
-    os.environ.get("API_KEY"),
-    os.environ.get("LOG_LEVEL"),
-    os.environ.get("ZION_ENDPOINT"),
+        os.environ.get("MATRIX_MODE"),
+        os.environ.get("DATABASE_URL"),
+        os.environ.get("API_KEY"),
+        os.environ.get("LOG_LEVEL"),
+        os.environ.get("ZION_ENDPOINT"),
     ])
 
     print(f"  - .env file loaded .... {'OK' if env_loaded else 'FAILED'}")

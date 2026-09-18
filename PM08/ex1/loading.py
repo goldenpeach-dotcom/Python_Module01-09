@@ -49,9 +49,9 @@ def generate_matrix_data(np_module: Any) -> Any:
 # requestsで外部APIからデータを取得
 # ------------------------------------------------------------
 def fetch_matrix_data(
-    requests_module: Any,
-    np_module: Any
-    ) -> Any:
+        requests_module: Any,
+        np_module: Any
+) -> Any:
     """
     PDF要件：
     - 外部APIから実データを取得する場合はrequestsを使用
@@ -107,7 +107,7 @@ def show_dependency_instructions() -> None:
 # ------------------------------------------------------------
 # データをロードする関数
 # ------------------------------------------------------------
-def load_data(source: str, numpy: Any, requests: Any | None=None) -> Any:
+def load_data(source: str, numpy: Any, requests: Any | None = None) -> Any:
     if source == "numpy":
         return generate_matrix_data(numpy)
 

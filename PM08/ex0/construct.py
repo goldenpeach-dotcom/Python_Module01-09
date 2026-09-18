@@ -2,12 +2,25 @@ import sys
 import os
 import site
 
+
 def is_venv() -> bool:
+    """
+    仮想環境にいるか判断する
+    Determine whether the system is running in a virtual environment.
+
+    """
     if sys.prefix != sys.base_prefix:
         return True
     return False
 
+
 def get_env_name() -> str:
+    """
+    仮想環境の名前を取得する。
+    Get the name of the virtual environment.
+
+    """
+
     # 1. 実行中の Python のフルパスを取る
     exe_path: str = sys.executable
     # 例: /home/.../PM08/matrix_env/bin/python3
@@ -28,7 +41,14 @@ def get_env_name() -> str:
     # return os.path.basename(venv_root)
     return env_name
 
+
 def print_outside_venv() -> None:
+    """
+    仮想環境の外にいる場合の出力
+    Output when outside the virtual environment
+
+    """
+
     stats_message: str = " You're still plugged in"
     virtual_environment = "None Detected"
     message = (
@@ -46,7 +66,14 @@ def print_outside_venv() -> None:
     print("")
     print(f"{message}")
 
+
 def print_inside_matrix() -> None:
+    """
+    仮想環境の中にいる場合の出力
+    Output when inside the virtual environment
+
+    """
+
     virtual_environment: str = get_env_name()
     message: str = (
         "SUCCESS: You're in an isolated environment!\n"
@@ -55,11 +82,12 @@ def print_inside_matrix() -> None:
         "Package installation path:\n"
         f"{site.getsitepackages()[0]}"
     )
-    print(f"MATRIX STATUS: Welcome to construct")
+    print("MATRIX STATUS: Welcome to construct")
     print(f"Current Python: {sys.executable}")
     print(f"Virtual Environment: {virtual_environment}")
     print("")
     print(f"{message}")
+
 
 def main() -> None:
     if is_venv():
@@ -68,5 +96,5 @@ def main() -> None:
         print_outside_venv()
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
