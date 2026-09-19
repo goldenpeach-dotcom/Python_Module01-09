@@ -1,0 +1,6 @@
+/.venv
+/__pycache__
+/generated_data
+data_exporter.py
+data_generator.py
+data_generator.tar
