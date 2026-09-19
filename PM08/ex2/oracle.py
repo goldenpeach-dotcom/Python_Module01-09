@@ -11,7 +11,9 @@ def load_config() -> dict[str, str | None]:
 
     env_exists = os.path.exists(".env")
 
-    has_inline_env = "MATRIX_MODE" in os.environ or "API_KEY" in os.environ
+    env_keys: lisr[str] = ["MATRIX_MODE", "API_KEY", "DATABASE_URL",
+            "LOG_LEVEL", "ZION_ENDPOINT"]
+    has_inline_env = any(key in os.environ for key in env_keys)
 
     if not env_exists and not has_inline_env:
         raise ConfigError(".env file is missing and no environment variables are set.")
@@ -37,12 +39,15 @@ def load_config() -> dict[str, str | None]:
     return config
 
 
-def check_hardcoded_secrets(filepath="oracle.py") -> bool:
+def check_hardcoded_secrets(filepath: str = "oracle.py") -> bool:
 
     try:
         with open(filepath, "r") as f:
             code: str = f.read()
-            pattern: str = r'(API_KEY|SECRET|PASSWORD)\s*=\s*["\'][^"\']+["\']'
+            pattern: str = (
+                r'(MATRIX_MODE|DATABASE_URL|API_KEY|LOG_LEVEL|ZION_ENDPOINT)\s*=\s*["\'][^"\']+["\']'
+                r'suspicious: list[str] = re.findall(pattern, code)'
+            )
             suspicious: list[str] = re.findall(pattern, code)
         return len(suspicious) == 0
     except (FileNotFoundError, PermissionError, OSError):
@@ -66,22 +71,20 @@ def check_env_file_valid(required_keys: list[str], env_path=".env"):
         return False
 
 
-def check_override_works(test_key="MODE"):
-    """OS環境変数が.envより優先されるかチェック"""
-    os.environ[test_key] = "production_override_test"
-    load_dotenv(override=False)  # .envの値でOS環境変数を潰さない設定
-    result = os.environ.get(test_key) == "production_override_test"
-    return result
-
+def check_override_works(original_value: str | None) -> bool | None:
+    """コマンドラインで渡された環境変数が.envより優先されるかチェック"""
+    if original_value is None:
+        return None
+    return os.environ.get("MATRIX_MODE") == original_value
 
 
 def main() -> None:
     print("ORACLE STATUS: Reading the Matrix...")
 
+    original_mode: str = os.environ.get("MATRIX_MODE")
     try:
         config = load_config()
-    except ConfigError as e:
-        print(f"[ERROR] {e}")
+    except ConfigError:
         print("Oracle cannot continue. Shutting down...")
         return
 
@@ -104,7 +107,7 @@ def main() -> None:
           else "[FAIL] Hardcoded secrets found!")
     print("[OK] .env file properly configured" if check_env_file_valid(required_keys)
           else "[FAIL] .env file missing or incomplete")
-    print("[OK] Production overrides available" if check_override_works()
+    print("[OK] Production overrides available" if check_override_works(original_mode)
           else "[FAIL] Production overrides not working")
 
 
