@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 from datetime import datetime
 
 class SpaceStation(BaseModel):
@@ -34,8 +34,8 @@ def main() -> None:
         print(f"Oxygen: {ss.oxygen_level}%")
         print(f"Status: {ss.is_operational}")
 
-    except Exception as e:
-        print("Unexpected validation error:", e)
+    except ValidationError as e:
+        print(f"Unexpected validation error:", {e})
 
     print("\nInvalid station example:")
     try:
@@ -47,5 +47,8 @@ def main() -> None:
             oxygen_level=50.0,
             last_maintenance=datetime.now()
         )
-    except Exception as e:
-        print("Validation error:", e)
+    except ValidationError as e:
+        print(f"Validation error: {e}")
+
+if __name__ == "__main__":
+    main()

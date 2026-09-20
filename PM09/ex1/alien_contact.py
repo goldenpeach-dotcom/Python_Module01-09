@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, ValidationError, model_validator
 from datetime import datetime
 from enum import Enum
 
@@ -67,7 +67,7 @@ def main() -> None:
         print(f"Witnesses: {ac.witness_count}")
         print(f"Message: '{ac.message_received}'")
 
-    except Exception as e:
+    except ValidationError as e:
         print("Unexpected validation error:", e)
 
     print("\nExpected validation error:")
@@ -83,5 +83,8 @@ def main() -> None:
             message_received="Mind link established.",
             is_verified=True
         )
-    except Exception as e:
+    except ValidationError as e:
         print("Validation error:", e)
+
+if __name__ == "__main__":
+    main()
