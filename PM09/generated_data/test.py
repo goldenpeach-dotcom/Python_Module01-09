@@ -77,7 +77,8 @@ def validate_json(path: Path, model: type[BaseModel]):
             model(**row)
             print(f"[OK] Item {i}: validated")
         except ValidationError as e:
-            print(f"[ERROR] Item {i}: {e}")
+            for err in e.errors():
+                print(err["msg"])
 
 
 def validate_python_list(
