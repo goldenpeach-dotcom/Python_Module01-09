@@ -13,6 +13,14 @@ class Rank(Enum):
 
 
 class CrewMember(BaseModel):
+    """
+    Represents an individual crew member assigned to a space mission.
+
+    This model stores personal identification, rank, specialization, experience,
+    and activity status. It is used for validating crew rosters and ensuring
+    mission readiness requirements are met.
+    """
+
     member_id: str = Field(..., min_length=3, max_length=10)
     name: str = Field(..., min_length=2, max_length=50)
     rank: Rank
@@ -23,6 +31,16 @@ class CrewMember(BaseModel):
 
 
 class SpaceMission(BaseModel):
+    """
+    Represents a complete space mission including crew, destination, timing,
+    duration, and operational status.
+
+    This model stores mission identification, launch scheduling, assigned crew,
+    mission parameters, and budget information. It is used for validating mission
+    plans and ensuring safety and experience requirements for long-duration
+    missions.
+    """
+
     mission_id: str = Field(..., min_length=5, max_length=15)
     mission_name: str = Field(..., min_length=3, max_length=100)
     destination: str = Field(..., min_length=3, max_length=50)

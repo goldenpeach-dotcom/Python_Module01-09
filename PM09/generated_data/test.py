@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 from pydantic import ValidationError, BaseModel
 from csv import DictReader
-from typing import Optional, List, Dict, Any
+from typing import List, Dict, Any
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT))
@@ -19,19 +19,19 @@ from ex1.alien_contact import AlienContact  # noqa: E402
 from ex2.space_crew import SpaceMission  # noqa: E402
 
 # Python データ（存在する場合のみ）
-SPACE_STATIONS: Optional[List[Dict[str, Any]]]
+SPACE_STATIONS: List[Dict[str, Any]] | None
 try:
     from space_stations import SPACE_STATIONS
 except ImportError:
     SPACE_STATIONS = None
 
-ALIEN_CONTACTS: Optional[List[Dict[str, Any]]]
+ALIEN_CONTACTS: List[Dict[str, Any]] | None
 try:
     from alien_contacts import ALIEN_CONTACTS
 except ImportError:
     ALIEN_CONTACTS = None
 
-SPACE_MISSIONS: Optional[List[Dict[str, Any]]]
+SPACE_MISSIONS: List[Dict[str, Any]] | None
 try:
     from space_missions import SPACE_MISSIONS
 except ImportError:
@@ -82,7 +82,7 @@ def validate_json(path: Path, model: type[BaseModel]):
 
 
 def validate_python_list(
-    py_list: Optional[List[Dict[str, Any]]],
+    py_list: List[Dict[str, Any]] | None,
     model: type[BaseModel],
     name: str,
 ):
