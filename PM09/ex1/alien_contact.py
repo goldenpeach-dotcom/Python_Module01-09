@@ -1,3 +1,4 @@
+from typing_extensions import Self
 from pydantic import BaseModel, Field, ValidationError, model_validator
 from datetime import datetime
 from enum import Enum
@@ -22,22 +23,32 @@ class AlienContact(BaseModel):
     is_verified: bool = False
 
     @model_validator(mode="after")
-    def validate_contact(self):
+    def validate_contact(self) -> Self:
         # 1. コンタクトIDは「AC」で始まる必要がある
         if not self.contact_id.startswith("AC"):
             raise ValueError("contact_id must start with 'AC'")
 
         # 2. 物理的接触は検証済みでなければならない
         if self.contact_type == ContactType.physical and not self.is_verified:
-            raise ValueError("Physical contact reports must be verified")
+            raise ValueError(
+                "Physical contact reports must be verified"
+            )
 
         # 3. テレパシーは目撃者が3人以上必要
-        if self.contact_type == ContactType.telepathic and self.witness_count < 3:
-            raise ValueError("Telepathic contact requires at least 3 witnesses")
+        if (
+            self.contact_type == ContactType.telepathic
+            and self.witness_count < 3
+        ):
+            raise ValueError(
+                "Telepathic contact requires at least 3 witnesses"
+            )
 
         # 4. 強い信号（> 7.0）は message_received が必須
         if self.signal_strength > 7.0 and not self.message_received:
-            raise ValueError("Strong signals (>7.0) must include a received message")
+            raise ValueError(
+                "Strong signals (>7.0) "
+                "must include a received message"
+            )
 
         return self
 
@@ -84,7 +95,9 @@ def main() -> None:
             is_verified=True
         )
     except ValidationError as e:
-        print("Validation error:", e)
+        for err in e.errors():
+            print(err["msg"])
+
 
 if __name__ == "__main__":
     main()
