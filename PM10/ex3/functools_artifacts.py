@@ -1,5 +1,5 @@
 from typing import Literal, List, Dict
-from functools import reduce
+from functools import reduce, partial, lru_cache
 from collections.abc import Callable
 import operator
 
@@ -31,8 +31,42 @@ def spell_reducer(
 
     return reduce(func,spells)
 
-def main() -> None:
+# 基本の関数を受け取って、一部の値を固定して作った別の関数の辞書を返す
+def enchant_items(power: int, element: str, target: str) -> str:
+    return f"{element.capitalize()}({power}) {target}"
 
+def partial_enchanter(
+    base_enchantment: Callable[[int, str, str], str],
+) -> Dict[str, Callable[[str], str]]:
+    """
+        
+        param:
+            base_enchantment(power:int, element: str, target: str) -> str
+        return:
+           elementsを固定した新しい関数
+    """
+    if not callable(base_enchantment):
+        raise TypeError("partial_enchanter needs an enchantment function")
+
+    fire = partial(base_enchantment, 50, "fire")
+    ice = partial(base_enchantment, 50, "ice")
+    lightning = partial(base_enchantment, 50, "lightning")
+
+    return{
+        "fire": fire,
+        "ice": ice,
+        "lightning": lightning,
+    }
+
+
+@lru_cache(maxsize=None)
+def memoized_fibonacci(n: int) -> int:
+    if n <= 1:
+        return n
+    return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
+
+
+def main() -> None:
     spells:List[int] = [40, 40, 20]
     print("Testing spell reducer...")
     sr_add: int = spell_reducer(spells, "add")
@@ -42,6 +76,18 @@ def main() -> None:
     print(" Sum:", sr_add)
     print(" Product:", f"{sr_mul * 7.5:.0f}")
     print(" Max:", sr_max)
+
+    print("\nTesting partial enchanter...")
+    ench: Dict[str,Callable[[str], str]] = partial_enchanter(enchant_items)
+    print(ench["fire"]("Sword"))
+    print(ench["ice"]("Shield"))
+    print(ench["lightning"]("Bow"))
+
+    print("\nTesting memoized fibonacci...")
+    for number in (0, 1, 10, 15):
+        print(f"fib({number}):", memoized_fibonacci(number))
+    print("Cache:", memoized_fibonacci.cache_info())
+
 
 if __name__ == "__main__":
     main()
