@@ -112,7 +112,11 @@ def show_dependency_instructions() -> None:
 # ------------------------------------------------------------
 # データをロードする関数
 # ------------------------------------------------------------
-def load_data(source: str, np_module: Any, requests_module: Any | None = None) -> Any:
+def load_data(
+        source: str,
+        np_module: Any,
+        requests_module: Any | None = None
+) -> Any:
     if source == "numpy":
         return generate_matrix_data(np_module)
 
@@ -153,7 +157,8 @@ def main() -> None:
     source = "api"  # or "numpy"
     data = load_data(source, np, requests_module)
     if data is None:
-        raise ValueError("No data was loaded")
+        print("[WARNING] API failed — falling back to numpy")
+        data = load_data("numpy", np)
 
     print(f"Processing {len(data)} data points...")
 
