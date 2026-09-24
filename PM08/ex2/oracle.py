@@ -1,5 +1,4 @@
 import os
-import re
 from dotenv import load_dotenv
 
 
@@ -47,27 +46,41 @@ def load_config() -> dict[str, str | None]:
 
 
 def check_hardcoded_secrets(filepath: str = "oracle.py") -> bool:
+    """
+    Return True if no secret keys are assigned a quoted string in the file.
+    """
+    keys: list[str] = [
+        "MATRIX_MODE",
+        "DATABASE_URL",
+        "API_KEY",
+        "LOG_LEVEL",
+        "ZION_ENDPOINT"
+    ]
 
     try:
         with open(filepath, "r") as f:
-            code: str = f.read()
-            pattern: str = (
-                r'(MATRIX_MODE|DATABASE_URL|API_KEY|LOG_LEVEL|ZION_ENDPOINT)'
-                r'\s*=\s*["\'][^"\']+["\']'
-                r'suspicious: list[str] = re.findall(pattern, code)'
-            )
-            suspicious: list[str] = re.findall(pattern, code)
-        return len(suspicious) == 0
-    except (FileNotFoundError, PermissionError, OSError):
+            lines: list[str] = f.readlines()
+    except OSError:
         print(
-            f"[WARNING] could not read {filepath}"
-            "for checking hardcoded secret check"
+            f"[WARNING] could not read {filepath} "
+            "for hardcoded secret check"
         )
         return False
 
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("#"):
+            continue
+        for key in keys:
+            if stripped.startswith(key) and "=" in stripped:
+                value = stripped.split("=", 1)[1].strip()
+                if value[:1] in ("'", '"'):
+                    return False
+    return True
+
 
 def check_env_file_valid(
-    required_keys: list[str], env_path: str =".env"
+    required_keys: list[str], env_path: str = ".env"
 ) -> bool:
     """
     Check if the .env file exists and contains all the required keys.
@@ -78,7 +91,7 @@ def check_env_file_valid(
         with open(env_path, "r") as f:
             content = f.read()
         return all(key in content for key in required_keys)
-    except (OSError):
+    except OSError:
         print(f"[WARNING] could not read {env_path}")
         return False
 
@@ -88,13 +101,13 @@ def check_override_works(original_value: str | None) -> bool:
     Check whether environment variables passed via the command line
     take precedence over those in .env.
     """
-
     if original_value is None:
         return True
     return os.environ.get("MATRIX_MODE") == original_value
 
 
 def main() -> None:
+
     print("ORACLE STATUS: Reading the Matrix...")
 
     original_mode: str | None = os.environ.get("MATRIX_MODE")
