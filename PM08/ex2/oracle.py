@@ -11,12 +11,19 @@ def load_config() -> dict[str, str | None]:
 
     env_exists = os.path.exists(".env")
 
-    env_keys: lisr[str] = ["MATRIX_MODE", "API_KEY", "DATABASE_URL",
-            "LOG_LEVEL", "ZION_ENDPOINT"]
+    env_keys: list[str] = [
+        "MATRIX_MODE",
+        "API_KEY",
+        "DATABASE_URL",
+        "LOG_LEVEL",
+        "ZION_ENDPOINT"
+    ]
     has_inline_env = any(key in os.environ for key in env_keys)
 
     if not env_exists and not has_inline_env:
-        raise ConfigError(".env file is missing and no environment variables are set.")
+        raise ConfigError(
+            ".env file is missing and no environment variables are set."
+        )
 
     load_dotenv()
 
@@ -45,7 +52,8 @@ def check_hardcoded_secrets(filepath: str = "oracle.py") -> bool:
         with open(filepath, "r") as f:
             code: str = f.read()
             pattern: str = (
-                r'(MATRIX_MODE|DATABASE_URL|API_KEY|LOG_LEVEL|ZION_ENDPOINT)\s*=\s*["\'][^"\']+["\']'
+                r'(MATRIX_MODE|DATABASE_URL|API_KEY|LOG_LEVEL|ZION_ENDPOINT)'
+                r'\s*=\s*["\'][^"\']+["\']'
                 r'suspicious: list[str] = re.findall(pattern, code)'
             )
             suspicious: list[str] = re.findall(pattern, code)
@@ -58,8 +66,12 @@ def check_hardcoded_secrets(filepath: str = "oracle.py") -> bool:
         return False
 
 
-def check_env_file_valid(required_keys: list[str], env_path=".env"):
-    """.envファイルが存在し、必須キーが揃っているかチェック"""
+def check_env_file_valid(
+    required_keys: list[str], env_path: str =".env"
+) -> bool:
+    """
+    Check if the .env file exists and contains all the required keys.
+    """
     if not os.path.exists(env_path):
         return False
     try:
@@ -71,17 +83,21 @@ def check_env_file_valid(required_keys: list[str], env_path=".env"):
         return False
 
 
-def check_override_works(original_value: str | None) -> bool | None:
-    """コマンドラインで渡された環境変数が.envより優先されるかチェック"""
+def check_override_works(original_value: str | None) -> bool:
+    """
+    Check whether environment variables passed via the command line
+    take precedence over those in .env.
+    """
+
     if original_value is None:
-        return None
+        return True
     return os.environ.get("MATRIX_MODE") == original_value
 
 
 def main() -> None:
     print("ORACLE STATUS: Reading the Matrix...")
 
-    original_mode: str = os.environ.get("MATRIX_MODE")
+    original_mode: str | None = os.environ.get("MATRIX_MODE")
     try:
         config = load_config()
     except ConfigError:
@@ -103,13 +119,21 @@ def main() -> None:
         "LOG_LEVEL",
         "ZION_ENDPOINT"
     ]
-    print("[OK] No hardcoded secrets detected" if check_hardcoded_secrets()
-          else "[FAIL] Hardcoded secrets found!")
-    print("[OK] .env file properly configured" if check_env_file_valid(required_keys)
-          else "[FAIL] .env file missing or incomplete")
-    print("[OK] Production overrides available" if check_override_works(original_mode)
-          else "[FAIL] Production overrides not working")
-
+    print(
+        "[OK] No hardcoded secrets detected"
+        if check_hardcoded_secrets() else
+        "[FAIL] Hardcoded secrets found!"
+        )
+    print(
+        "[OK] .env file properly configured"
+        if check_env_file_valid(required_keys) else
+        "[FAIL] .env file missing or incomplete"
+        )
+    print(
+        "[OK] Production overrides available"
+        if check_override_works(original_mode) else
+        "[FAIL] Production overrides not working"
+        )
 
     print("\nThe Oracle sees all configurations.")
 

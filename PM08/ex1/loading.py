@@ -5,167 +5,140 @@ Matrix Data Loading Program
 """
 
 import importlib
-from typing import Tuple, Optional, Any
+# from typing import Tuple, Optional, Any
+# from types import ModuleType
 
 
-# ------------------------------------------------------------
-# 依存関係チェック
-# ------------------------------------------------------------
-def check_dependency(name: str, description: str) -> Optional[Any]:
+
+def check_dependency(name: str, description: str) -> bool:
     """
-    指定されたモジュールを import し、バージョンを表示する。
-    見つからない場合は None を返す。
+        param:
+            name module_name
+            description module
+        return:
+            the module if import succeeds, False otherwise.
+
     """
     try:
-        module = importlib.import_module(name)
+        importlib.import_module(name)
     except ImportError:
         print(f"[MISSING] {name} - install with pip or poetry")
-        return None
+        return False
 
+
+    top_name = name.split(".")[0]
+    top_module = importlib.import_module(top_name)
+    version = getattr(top_module, "__version__", "unknown")
+
+    print(f"[OK] {top_name} ({version}) - {description}")
+    return True
+
+
+def generate_matrix_data() -> list[float]:
+    """
+    Data generation using NumPy
+    """
+    import numpy as np
+
+    data: list[float] = np.random.randn(1000).tolist()
+
+    return data
+
+
+def fetch_matrix_data() -> list[float] | None:
+    """
+    Fetch true random numbers from random.org using requests.
+    """
+    import requests
+
+    url = (
+        "https://www.random.org/integers/?num=1000&min=-100"
+        "&max=100&col=1&base=10&format=plain"
+    )
     try:
-        if name == "matplotlib.pyplot":
-            import matplotlib
-            version = matplotlib.__version__
-            display_name = "matplotlib"
-        else:
-            version = module.__version__
-            display_name = name
-    except AttributeError:
-        version = "unknown"
-        display_name = name
-
-    print(f"[OK] {display_name} ({version}) - {description}")
-    return module
-
-
-# ------------------------------------------------------------
-# numpy によるデータ生成
-# ------------------------------------------------------------
-def generate_matrix_data(np_module: Any) -> Any:
-    """
-    PDF要件：
-    - データソースは numpy のみ
-    - range() や手書きリストは禁止
-    """
-    return np_module.random.randn(1000)
-
-
-# ------------------------------------------------------------
-# requestsで外部APIからデータを取得
-# ------------------------------------------------------------
-def fetch_matrix_data(
-        requests_module: Any,
-        np_module: Any
-) -> Any:
-    """
-    PDF要件：
-    - 外部APIから実データを取得する場合はrequestsを使用
-    - random.org APIから真の乱数を取得してnumpy配列に変換
-    """
-    try:
-        url = (
-            "https://www.random.org/integers/?num=1000&min=-100"
-            "&max=100&col=1&base=10&format=plain"
-        )
-        response = requests_module.get(url, timeout=10)
+        response = requests.get(url, timeout=10)
         response.raise_for_status()
-        lines = response.text.strip().split("\n")
-        data = np_module.array(lines, dtype=float)
-        return data
-    except requests_module.exceptions.HTTPError as e:
+        return [float(x) for x in response.text.split()]
+    except requests.exceptions.HTTPError as e:
         print(f"[ERROR] API request failed: {e}")
-        return None
-    except requests_module.exceptions.RequestException as e:
+    except requests.exceptions.RequestException as e:
         print(f"[ERROR] Network error: {e}")
-        return None
+    except ValueError as e:
+        print(f"[ERROR] Invalid data received: {e}")
+    return None
 
 
-# ------------------------------------------------------------
-# pandas による分析
-# ------------------------------------------------------------
-def analyze_data(pd_module: Any, data: Any) -> Tuple[Any, Any]:
-    # numpy の配列を表形式に変換
-    df = pd_module.DataFrame({"values": data})
-    summary = df.describe()
-    return df, summary
+def analyze_data(data: list[float]) -> dict[str, float]:
+    """
+    Summarize the data with pandas.
+    """
+    import pandas as pd
+
+    df = pd.DataFrame({"values": data})
+    summary = df["values"].describe()
+    return {str(key): float(value) for key, value in summary.items()}
 
 
-# ------------------------------------------------------------
-# matplotlib による可視化
-# ------------------------------------------------------------
-def visualize(plt_module: Any, df: Any) -> None:
-    fig = plt_module.figure(figsize=(8, 4))
-    df["values"].plot(kind="line")
-    plt_module.title("Matrix Data Analysis")
+def visualize(data: list[float]) -> None:
+    import matplotlib.pyplot as plt
+
+    fig = plt.figure(figsize=(8, 4))
+    plt.plot(data)
+    plt.title("Matrix Data Analysis")
     fig.savefig("matrix_analysis.png")
+    plt.close(fig)
 
 
-# ------------------------------------------------------------
-# pip と Poetry の違いを示す補助表示
-# ------------------------------------------------------------
 def show_dependency_instructions() -> None:
     print("\nDependency installation instructions:")
     print("pip:    pip install -r requirements.txt")
     print("Poetry: poetry install\n")
 
 
-# ------------------------------------------------------------
-# データをロードする関数
-# ------------------------------------------------------------
-def load_data(
-        source: str,
-        np_module: Any,
-        requests_module: Any | None = None
-) -> Any:
+
+def load_data(source: str) -> list[float]:
     if source == "numpy":
-        return generate_matrix_data(np_module)
+        return generate_matrix_data()
 
     if source == "api":
-        if requests_module is None:
-            print("[WARNING] requests missing — falling back to numpy")
-            return generate_matrix_data(np_module)
-        return fetch_matrix_data(requests_module, np_module)
+        data = fetch_matrix_data()
+        if data is None:
+            print("[WARNING] API failed — falling back to numpy")
+            return generate_matrix_data()
+        return data
 
     raise ValueError(f"Unknown data source: {source}")
 
 
-# ------------------------------------------------------------
-# メイン処理
-# ------------------------------------------------------------
+
 def main() -> None:
     print("LOADING STATUS: Loading programs...")
     print("Checking dependencies:")
 
-    pd = check_dependency("pandas", "Data manipulation ready")
-    np = check_dependency("numpy", "Numerical computation ready")
-    plt = check_dependency("matplotlib.pyplot", "Visualization ready")
+    pd_ok = check_dependency("pandas", "Data manipulation ready")
+    np_ok = check_dependency("numpy", "Numerical computation ready")
+    plt_ok = check_dependency("matplotlib.pyplot", "Visualization ready")
+    requests_ok = check_dependency("requests", "Network access ready")
 
-    use_api: bool = True  # or False
-
-    if use_api:
-        requests_module = check_dependency("requests", "Network access ready")
-    else:
-        requests_module = None
-
-    # 必須依存が欠けていたら終了
-    if not (pd and np and plt):
+    if not (pd_ok and np_ok and plt_ok):
         print("\nERROR: Missing dependencies.")
         show_dependency_instructions()
         return
 
+    source = "api" if requests_ok else "numpy"
+    if source == "numpy":
+       print("\n[WARNING]: requests missing - falling back to numpy")
+
     print("Analyzing Matrix data...")
-    source = "api"  # or "numpy"
-    data = load_data(source, np, requests_module)
-    if data is None:
-        print("[WARNING] API failed — falling back to numpy")
-        data = load_data("numpy", np)
+    data = load_data(source)
 
     print(f"Processing {len(data)} data points...")
-
-    df, summary = analyze_data(pd, data)
+    summary = analyze_data(data)
+    for key, value in summary.items():
+        print(f"  {key}: {value:.3f}")
 
     print("Generating visualization...")
-    visualize(plt, df)
+    visualize(data)
 
     print("Analysis complete!")
     print("Results saved to: matrix_analysis.png")

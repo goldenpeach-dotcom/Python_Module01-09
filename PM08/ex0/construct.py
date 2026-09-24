@@ -5,7 +5,6 @@ import site
 
 def is_venv() -> bool:
     """
-    仮想環境にいるか判断する
     Determine whether the system is running in a virtual environment.
 
     """
@@ -16,27 +15,17 @@ def is_venv() -> bool:
 
 def get_env_name() -> str:
     """
-    仮想環境の名前を取得する。
     Get the name of the virtual environment.
 
     """
 
-    # 1. 実行中の Python のフルパスを取る
     exe_path: str = sys.executable
-    # 例: /home/.../PM08/matrix_env/bin/python3
 
-    # 2. その一つ上のディレクトリを取る（bin）
     bin_dir: str = os.path.dirname(exe_path)
-    # 例: /home/.../PM08/matrix_env/bin
 
-    # 3. さらにその一つ上のディレクトリを取る（matrix_env）
     venv_root: str = os.path.dirname(bin_dir)
-    # 例: /home/.../PM08/matrix_env
 
-    # 4. 最後にそのディレクトリ名だけ取り出す
     env_name: str = os.path.basename(venv_root)
-    # 例: matrix_env
-    # 1行で書くと
     # venv_root = os.path.dirname(os.path.dirname(sys.executable))
     # return os.path.basename(venv_root)
     return env_name
@@ -44,7 +33,6 @@ def get_env_name() -> str:
 
 def print_outside_venv() -> None:
     """
-    仮想環境の外にいる場合の出力
     Output when outside the virtual environment
 
     """
@@ -69,7 +57,6 @@ def print_outside_venv() -> None:
 
 def print_inside_matrix() -> None:
     """
-    仮想環境の中にいる場合の出力
     Output when inside the virtual environment
 
     """
