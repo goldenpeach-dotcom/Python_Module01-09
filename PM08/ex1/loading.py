@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
-"""
-Exercise 1 — loading.py
-Matrix Data Loading Program
-"""
-
+import sys
 import importlib
-# from typing import Tuple, Optional, Any
-# from types import ModuleType
-
 
 
 def check_dependency(name: str, description: str) -> bool:
@@ -19,16 +12,14 @@ def check_dependency(name: str, description: str) -> bool:
             the module if import succeeds, False otherwise.
 
     """
+    top_name = name.split(".")[0]
     try:
         importlib.import_module(name)
     except ImportError:
         print(f"[MISSING] {name} - install with pip or poetry")
         return False
 
-
-    top_name = name.split(".")[0]
-    top_module = importlib.import_module(top_name)
-    version = getattr(top_module, "__version__", "unknown")
+    version = getattr(sys.modules[top_name], "__version__", "unknown")
 
     print(f"[OK] {top_name} ({version}) - {description}")
     return True
@@ -95,7 +86,6 @@ def show_dependency_instructions() -> None:
     print("Poetry: poetry install\n")
 
 
-
 def load_data(source: str) -> list[float]:
     if source == "numpy":
         return generate_matrix_data()
@@ -108,7 +98,6 @@ def load_data(source: str) -> list[float]:
         return data
 
     raise ValueError(f"Unknown data source: {source}")
-
 
 
 def main() -> None:
@@ -127,7 +116,7 @@ def main() -> None:
 
     source = "api" if requests_ok else "numpy"
     if source == "numpy":
-       print("\n[WARNING]: requests missing - falling back to numpy")
+        print("\n[WARNING]: requests missing - falling back to numpy")
 
     print("Analyzing Matrix data...")
     data = load_data(source)
