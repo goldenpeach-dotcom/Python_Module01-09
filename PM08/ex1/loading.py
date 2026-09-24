@@ -18,7 +18,11 @@ def check_dependency(name: str, description: str) -> Optional[Any]:
     """
     try:
         module = importlib.import_module(name)
-        # バージョンはトップレベル matplotlib から取る
+    except ImportError:
+        print(f"[MISSING] {name} - install with pip or poetry")
+        return None
+
+    try:
         if name == "matplotlib.pyplot":
             import matplotlib
             version = matplotlib.__version__
@@ -26,11 +30,12 @@ def check_dependency(name: str, description: str) -> Optional[Any]:
         else:
             version = module.__version__
             display_name = name
-        print(f"[OK] {display_name} ({version}) - {description}")
-        return module
-    except Exception:
-        print(f"[MISSING] {name} - install with pip or poetry")
-        return None
+    except AttributeError:
+        version = "unknown"
+        display_name = name
+
+    print(f"[OK] {display_name} ({version}) - {description}")
+    return module
 
 
 # ------------------------------------------------------------
