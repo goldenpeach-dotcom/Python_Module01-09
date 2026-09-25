@@ -60,13 +60,15 @@ def check_hardcoded_secrets(
 
     for line in lines:
         stripped = line.strip()
-        if stripped.startswith("#"):
+        if stripped.startswith("#") or "=" not in stripped:
             continue
-        for key in required_keys:
-            if stripped.startswith(key) and "=" in stripped:
-                value = stripped.split("=", 1)[1].strip()
-                if value[:1] in ("'", '"'):
-                    return False
+        name, _, rest = stripped.partition("=")
+        name = name.strip()
+        if name in required_keys:
+            value = rest.strip()
+            if value[:1] in ("'", '"'):
+                return False
+
     return True
 
 
@@ -80,7 +82,7 @@ def check_env_file_valid(
         return False
     try:
         with open(env_path, "r") as f:
-            content = f.read()
+            content: str = f.read()
         return all(key in content for key in required_keys)
     except OSError:
         print(f"[WARNING] could not read {env_path}")
@@ -98,16 +100,21 @@ def check_override_works(original_value: str | None) -> bool:
 
 
 def main() -> None:
-
     print("ORACLE STATUS: Reading the Matrix...")
 
     required_keys: list[str] = [
-        "MATRIX_MODE",
         "DATABASE_URL",
         "API_KEY",
-        "LOG_LEVEL",
         "ZION_ENDPOINT"
     ]
+
+    all_config_keys: list[str] = [
+    "MATRIX_MODE",
+    "DATABASE_URL",
+    "API_KEY",
+    "LOG_LEVEL",
+    "ZION_ENDPOINT"
+]
 
     original_mode: str | None = os.environ.get("MATRIX_MODE")
     try:
@@ -121,12 +128,12 @@ def main() -> None:
     print(f"Database: {config['db'] or 'Connected to local instance'}")
     print(f"API Access: {'Authenticated' if config['api_key'] else 'Missing'}")
     print(f"Log Level: {config['log_level'] or 'Missing'} ")
-    print(f"Zion Network: {config['zion'] or 'Offline'}")
+    print(f"Zion Network: {'Online' if config['zion'] else 'Offline'}")
 
     print("Environment security check:")
     print(
         "[OK] No hardcoded secrets detected"
-        if check_hardcoded_secrets(required_keys) else
+        if check_hardcoded_secrets(all_config_keys) else
         "[FAIL] Hardcoded secrets found!"
         )
     print(
@@ -141,6 +148,7 @@ def main() -> None:
         )
 
     print("\nThe Oracle sees all configurations.")
+
 
 
 if __name__ == "__main__":
