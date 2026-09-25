@@ -109,12 +109,12 @@ def main() -> None:
     ]
 
     all_config_keys: list[str] = [
-    "MATRIX_MODE",
-    "DATABASE_URL",
-    "API_KEY",
-    "LOG_LEVEL",
-    "ZION_ENDPOINT"
-]
+        "MATRIX_MODE",
+        "DATABASE_URL",
+        "API_KEY",
+        "LOG_LEVEL",
+        "ZION_ENDPOINT"
+    ]
 
     original_mode: str | None = os.environ.get("MATRIX_MODE")
     try:
