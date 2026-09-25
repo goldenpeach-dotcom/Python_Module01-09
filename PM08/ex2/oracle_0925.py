@@ -1,10 +1,6 @@
 import os
 
 
-class ConfigError(Exception):
-    pass
-
-
 VALID_MODES = {"development", "production"}
 
 ALL_ENV_KEYS: list[str] = [
@@ -28,6 +24,9 @@ ENV_TO_CONFIG: dict[str, str] = {
     "LOG_LEVEL": "log_level",
     "ZION_ENDPOINT": "zion",
 }
+
+class ConfigError(Exception):
+    pass
 
 
 def load_config(required_keys: list[str]) -> dict[str, str | None]:
@@ -152,11 +151,10 @@ def main() -> None:
 
     original_mode: str | None = os.environ.get("MATRIX_MODE")
     try:
-        config: dict[str, str | None] = load_config(STRICT_REQUIRED_KEYS)
+        config: dict[str, str | None] = load_config(ALL_ENV_KEYS)
     except ConfigError as e:
         print(
-            f"Oracle cannot continue: {e}"
-            "Shutting down...")
+            f"Oracle cannot continue: {e}")
         return
 
     print("Configuration loaded:")
