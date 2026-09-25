@@ -63,6 +63,9 @@ def analyze_data(data: list[float]) -> dict[str, float]:
     """
     Summarize the data with pandas.
     """
+    if not data:
+        raise ValueError("No data to analyze")
+
     import pandas as pd
 
     df = pd.DataFrame({"values": data})
@@ -76,8 +79,13 @@ def visualize(data: list[float]) -> None:
     fig = plt.figure(figsize=(8, 4))
     plt.plot(data)
     plt.title("Matrix Data Analysis")
-    fig.savefig("matrix_analysis.png")
-    plt.close(fig)
+    try:
+        fig.savefig("matrix_analysis.png")
+    except OSError as e:
+        print(f"[ERROR] Could not save visualization: {e}")
+    finally:
+        plt.close(fig)
+
 
 
 def show_dependency_instructions() -> None:

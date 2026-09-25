@@ -5,11 +5,12 @@
 │   ├── loading.py
 │   ├── pyproject.toml
 │   └── requirements.txt
-├── ex2
-|   ├── oracle.py
-|   ├── .env.example
-|   └── (requirements.txt)
-└── .gitignore
+└── ex2
+    ├── oracle.py
+    ├── .env.example
+    ├──  requirements.txt
+    └── .gitignore
+
 
 
 └── matrix_env

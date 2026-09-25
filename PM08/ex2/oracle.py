@@ -9,6 +9,7 @@ def load_config(required_keys: list[str]) -> dict[str, str | None]:
     """
     Check if the .env file exists and load .env
     """
+
     from dotenv import load_dotenv
 
     env_exists = os.path.exists(".env")
@@ -103,12 +104,6 @@ def main() -> None:
     print("ORACLE STATUS: Reading the Matrix...")
 
     required_keys: list[str] = [
-        "DATABASE_URL",
-        "API_KEY",
-        "ZION_ENDPOINT"
-    ]
-
-    all_config_keys: list[str] = [
         "MATRIX_MODE",
         "DATABASE_URL",
         "API_KEY",
@@ -133,7 +128,7 @@ def main() -> None:
     print("Environment security check:")
     print(
         "[OK] No hardcoded secrets detected"
-        if check_hardcoded_secrets(all_config_keys) else
+        if check_hardcoded_secrets(required_keys) else
         "[FAIL] Hardcoded secrets found!"
         )
     print(
