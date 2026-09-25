@@ -1,23 +1,19 @@
 import os
-from dotenv import load_dotenv
 
 
 class ConfigError(Exception):
     pass
 
 
-def load_config() -> dict[str, str | None]:
+def load_config(required_keys: list[str]) -> dict[str, str | None]:
+    """
+    Check if the .env file exists and load .env
+    """
+    from dotenv import load_dotenv
 
     env_exists = os.path.exists(".env")
 
-    env_keys: list[str] = [
-        "MATRIX_MODE",
-        "API_KEY",
-        "DATABASE_URL",
-        "LOG_LEVEL",
-        "ZION_ENDPOINT"
-    ]
-    has_inline_env = any(key in os.environ for key in env_keys)
+    has_inline_env = any(key in os.environ for key in required_keys)
 
     if not env_exists and not has_inline_env:
         raise ConfigError(
@@ -45,17 +41,12 @@ def load_config() -> dict[str, str | None]:
     return config
 
 
-def check_hardcoded_secrets(filepath: str = "oracle.py") -> bool:
+def check_hardcoded_secrets(
+    required_keys: list[str], filepath: str = "oracle.py"
+) -> bool:
     """
     Return True if no secret keys are assigned a quoted string in the file.
     """
-    keys: list[str] = [
-        "MATRIX_MODE",
-        "DATABASE_URL",
-        "API_KEY",
-        "LOG_LEVEL",
-        "ZION_ENDPOINT"
-    ]
 
     try:
         with open(filepath, "r") as f:
@@ -71,7 +62,7 @@ def check_hardcoded_secrets(filepath: str = "oracle.py") -> bool:
         stripped = line.strip()
         if stripped.startswith("#"):
             continue
-        for key in keys:
+        for key in required_keys:
             if stripped.startswith(key) and "=" in stripped:
                 value = stripped.split("=", 1)[1].strip()
                 if value[:1] in ("'", '"'):
@@ -110,9 +101,17 @@ def main() -> None:
 
     print("ORACLE STATUS: Reading the Matrix...")
 
+    required_keys: list[str] = [
+        "MATRIX_MODE",
+        "DATABASE_URL",
+        "API_KEY",
+        "LOG_LEVEL",
+        "ZION_ENDPOINT"
+    ]
+
     original_mode: str | None = os.environ.get("MATRIX_MODE")
     try:
-        config = load_config()
+        config: dict[str, str | None] = load_config(required_keys)
     except ConfigError:
         print("Oracle cannot continue. Shutting down...")
         return
@@ -125,16 +124,9 @@ def main() -> None:
     print(f"Zion Network: {config['zion'] or 'Offline'}")
 
     print("Environment security check:")
-    required_keys: list[str] = [
-        "MATRIX_MODE",
-        "DATABASE_URL",
-        "API_KEY",
-        "LOG_LEVEL",
-        "ZION_ENDPOINT"
-    ]
     print(
         "[OK] No hardcoded secrets detected"
-        if check_hardcoded_secrets() else
+        if check_hardcoded_secrets(required_keys) else
         "[FAIL] Hardcoded secrets found!"
         )
     print(
