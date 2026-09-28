@@ -2,7 +2,6 @@
 import sys
 import importlib
 
-
 def check_dependency(name: str, description: str) -> bool:
     """
         param:

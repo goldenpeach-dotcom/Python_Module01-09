@@ -58,8 +58,8 @@ def load_config() -> dict[str, str | None]:
     config["MATRIX_MODE"] = resolve_mode()
 
     if not config["LOG_LEVEL"]:
-        print("[INFO] LOG_LEVEL not set, using default 'INFO'")
-        config["LOG_LEVEL"] = "INFO"
+        print("[INFO] LOG_LEVEL not set, using default 'DEBUG'")
+        config["LOG_LEVEL"] = "DEBUG"
     return config
 
 
