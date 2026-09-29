@@ -1,4 +1,3 @@
-from typing_extensions import Self
 from pydantic import BaseModel, Field, model_validator, ValidationError
 from datetime import datetime
 from enum import Enum
@@ -16,8 +15,9 @@ class CrewMember(BaseModel):
     """
     Represents an individual crew member assigned to a space mission.
 
-    This model stores personal identification, rank, specialization, experience,
-    and activity status. It is used for validating crew rosters and ensuring
+    This model stores personal identification, rank, specialization, 
+    experience,and activity status. 
+    It is used for validating crew rosters and ensuring
     mission readiness requirements are met.
     """
 
@@ -36,7 +36,8 @@ class SpaceMission(BaseModel):
     duration, and operational status.
 
     This model stores mission identification, launch scheduling, assigned crew,
-    mission parameters, and budget information. It is used for validating mission
+    mission parameters, and budget information.
+    It is used for validating mission
     plans and ensuring safety and experience requirements for long-duration
     missions.
     """
@@ -51,7 +52,7 @@ class SpaceMission(BaseModel):
     budget_millions: float = Field(..., ge=1.0, le=10000.0)
 
     @model_validator(mode="after")
-    def validate_mission(self) -> Self:
+    def validate_mission(self) -> "SpaceMission":
         # 1. ミッションIDは M で始まる
         if not self.mission_id.startswith("M"):
             raise ValueError("mission_id must start with 'M'")
