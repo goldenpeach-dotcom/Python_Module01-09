@@ -32,17 +32,17 @@ class AlienContact(BaseModel):
 
     @model_validator(mode="after")
     def validate_contact(self) -> "AlienContact":
-        # 1. コンタクトIDは「AC」で始まる必要がある
+        # 1. The contact ID needs to start with 'AC'.
         if not self.contact_id.startswith("AC"):
             raise ValueError("contact_id must start with 'AC'")
 
-        # 2. 物理的接触は検証済みでなければならない
+        # 2. Physical contact must be verified.
         if self.contact_type == ContactType.physical and not self.is_verified:
             raise ValueError(
                 "Physical contact reports must be verified"
             )
 
-        # 3. テレパシーは目撃者が3人以上必要
+        # 3. Telepathy requires at least three witnesses
         if (
             self.contact_type == ContactType.telepathic
             and self.witness_count < 3
@@ -51,7 +51,7 @@ class AlienContact(BaseModel):
                 "Telepathic contact requires at least 3 witnesses"
             )
 
-        # 4. 強い信号（> 7.0）は message_received が必須
+        # 4. A strong signal (> 7.0) requires message_received
         if self.signal_strength > 7.0 and not self.message_received:
             raise ValueError(
                 "Strong signals (>7.0) "

@@ -53,11 +53,11 @@ class SpaceMission(BaseModel):
 
     @model_validator(mode="after")
     def validate_mission(self) -> "SpaceMission":
-        # 1. ミッションIDは M で始まる
+        # 1. The mission ID starts with M
         if not self.mission_id.startswith("M"):
             raise ValueError("mission_id must start with 'M'")
 
-        # 2. 司令官または船長が最低1人必要
+        # 2. At least one commander or captain is needed
         has_leader = any(
             member.rank in {Rank.captain, Rank.commander}
             for member in self.crew
@@ -67,7 +67,8 @@ class SpaceMission(BaseModel):
                 "Mission must include at least one captain or commander"
             )
 
-        # 3. 長期ミッション（365日超）は経験5年以上が50%以上必要
+        # 3. For long-term missions (over 365 days),
+        # more than 50% of the team needs over 5 years of experience
         if self.duration_days > 365:
             experienced: int = sum(
                 1 for m in self.crew if m.years_experience >= 5
@@ -78,7 +79,7 @@ class SpaceMission(BaseModel):
                     "experienced crew (>=5 years)"
                 )
 
-        # 4. 全乗組員がアクティブであること
+        # 4. All crew members are active
         inactive: list[str] = [m.name for m in self.crew if not m.is_active]
         if inactive:
             raise ValueError(f"Inactive crew members found: {inactive}")
