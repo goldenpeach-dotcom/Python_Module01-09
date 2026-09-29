@@ -15,8 +15,8 @@ class CrewMember(BaseModel):
     """
     Represents an individual crew member assigned to a space mission.
 
-    This model stores personal identification, rank, specialization, 
-    experience,and activity status. 
+    This model stores personal identification, rank, specialization,
+    experience,and activity status.
     It is used for validating crew rosters and ensuring
     mission readiness requirements are met.
     """
