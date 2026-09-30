@@ -58,7 +58,7 @@ class DataExporter:
         
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(f'"""\nGenerated test data for {filename}\n"""\n\n')
-            # Use repr() to get proper Python syntax instead of JSON
+            # Use _format_python_data to get proper Python syntax instead of JSON
             f.write(f'{variable_name} = {self._format_python_data(data)}\n')
         
         return filepath
