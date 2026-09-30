@@ -56,7 +56,7 @@ def validate_csv(path: Path, model: type[BaseModel]):
         row: dict[str | Any, str | Any]
         for i, row in enumerate(reader, start=1):
             try:
-                model(**row)
+                model(**row)                    
                 print(f"[OK] Row {i}: validated")
             except ValidationError as e:
                 print(f"[ERROR] Row {i}: {e}")

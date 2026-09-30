@@ -132,8 +132,8 @@ def main() -> None:
         )
 
         print("Valid mission created:")
-        print(f"Mission: {sm.mission_name}")
         print(f"ID: {sm.mission_id}")
+        print(f"Mission: {sm.mission_name}")
         print(f"Destination: {sm.destination}")
         print(f"Duration: {sm.duration_days} days")
         print(f"Budget: ${sm.budget_millions}M")
@@ -141,7 +141,7 @@ def main() -> None:
         print("Crew members:")
         for member in sm.crew:
             print(
-                f"- {member.name} ({member.rank.value})"
+                f"- {member.name} ({member.rank.value}) "
                 f"- {member.specialization}"
             )
 

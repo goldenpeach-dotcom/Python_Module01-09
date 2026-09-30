@@ -12,7 +12,7 @@ from data_generator import (
     CrewMissionGenerator,
 )
 
-# あなたのモデルを import
+# import my modules
 from ex0.space_station import SpaceStation
 from ex1.alien_contact import AlienContact
 from ex2.space_crew import SpaceMission
