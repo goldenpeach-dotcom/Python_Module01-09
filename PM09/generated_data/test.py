@@ -3,6 +3,31 @@
 Full validation test suite for Module09 datasets.
 Validates CSV, JSON, and Python data using your Pydantic models.
 """
+# 主な問題点
+
+# 1. データの場所が違う
+# エクスポーターの出力先は generated_data/ ですが、base = Path(".") になっています。そのため「File not found, skipping.」で全部スキップされます。Pythonデータの from space_stations import ... も同じ理由で ImportError になり、None のまま黙ってスキップされます。
+
+# 2. 合否の判定がない
+# 今は結果を表示しているだけで、期待どおりかどうかを判定していません。特に invalid_*.json はエラーになるのが正解なのに、通ってしまっても [OK] と表示されます。
+
+# 正常データは、エラーが出たら失敗にします。
+# 不正データは、エラーが出なかったら失敗にします。
+# 最後に失敗数を集計して、sys.exit(1) で終了します。
+
+# 3. 出力の形式がばらばら
+# validate_json だけエラーメッセージのみで、行番号も [ERROR] もありません。1つの check_rows にまとめて、形式をそろえました。
+
+# 4. CSVの空文字
+# エクスポーターは None を "" として書き出すので、読み込み時に None へ戻すようにしました。戻さないと、notes や message_received でバリデーションの結果が変わる可能性があります。
+
+# 5. mypy / flake8 対策
+
+# 関数に戻り値の型（-> None など）がなく、--strict で怒られます。
+# row: dict[str | Any, str | Any] のような注釈は不要です。
+# import csv と from csv import DictReader が重複しています。
+# model(**row) ではなく model.model_validate(row) が推奨です。
+
 import sys
 import csv
 import json
@@ -17,6 +42,7 @@ sys.path.append(str(ROOT))
 from ex0.space_station import SpaceStation  # noqa: E402
 from ex1.alien_contact import AlienContact  # noqa: E402
 from ex2.space_crew import SpaceMission  # noqa: E402
+
 
 # Python データ（存在する場合のみ）
 SPACE_STATIONS: List[Dict[str, Any]] | None

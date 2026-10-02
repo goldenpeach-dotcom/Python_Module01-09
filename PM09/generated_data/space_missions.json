@@ -305,5 +305,182 @@
     ],
     "mission_status": "planned",
     "budget_millions": 1092.6
+  },
+  {
+    "mission_id": "M2024_MARS",
+    "mission_name": "Asteroid Belt Colony Mission",
+    "destination": "Asteroid Belt",
+    "launch_date": "2024-06-22T00:00:00",
+    "duration_days": 421,
+    "crew": [
+      {
+        "member_id": "CM051",
+        "name": "Alice Jones",
+        "rank": "commander",
+        "age": 43,
+        "specialization": "Medical Officer",
+        "years_experience": 30,
+        "is_active": true
+      },
+      {
+        "member_id": "CM052",
+        "name": "Sarah Connor",
+        "rank": "officer",
+        "age": 28,
+        "specialization": "Life Support",
+        "years_experience": 6,
+        "is_active": true
+      },
+      {
+        "member_id": "CM053",
+        "name": "David Smith",
+        "rank": "officer",
+        "age": 42,
+        "specialization": "Navigation",
+        "years_experience": 21,
+        "is_active": true
+      },
+      {
+        "member_id": "CM054",
+        "name": "Thomas Hernandez",
+        "rank": "lieutenant",
+        "age": 53,
+        "specialization": "Pilot",
+        "years_experience": 30,
+        "is_active": true
+      },
+      {
+        "member_id": "CM055",
+        "name": "Robert Rodriguez",
+        "rank": "lieutenant",
+        "age": 55,
+        "specialization": "Engineering",
+        "years_experience": 30,
+        "is_active": true
+      },
+      {
+        "member_id": "CM056",
+        "name": "Maria Lopez",
+        "rank": "captain",
+        "age": 49,
+        "specialization": "Engineering",
+        "years_experience": 30,
+        "is_active": true
+      },
+      {
+        "member_id": "CM057",
+        "name": "David Miller",
+        "rank": "officer",
+        "age": 34,
+        "specialization": "Science Officer",
+        "years_experience": 15,
+        "is_active": true
+      },
+      {
+        "member_id": "CM058",
+        "name": "Daniel Brown",
+        "rank": "lieutenant",
+        "age": 47,
+        "specialization": "Security",
+        "years_experience": 30,
+        "is_active": true
+      }
+    ],
+    "mission_status": "planned",
+    "budget_millions": 3554.9
+  },
+  {
+    "mission_id": "M2024_TITAN",
+    "mission_name": "Saturn Rings Colony Mission",
+    "destination": "Saturn Rings",
+    "launch_date": "2024-03-28T00:00:00",
+    "duration_days": 660,
+    "crew": [
+      {
+        "member_id": "CM061",
+        "name": "Robert Miller",
+        "rank": "captain",
+        "age": 36,
+        "specialization": "Mission Command",
+        "years_experience": 16,
+        "is_active": true
+      },
+      {
+        "member_id": "CM062",
+        "name": "Thomas Garcia",
+        "rank": "lieutenant",
+        "age": 26,
+        "specialization": "Communications",
+        "years_experience": 11,
+        "is_active": true
+      },
+      {
+        "member_id": "CM063",
+        "name": "Thomas Smith",
+        "rank": "cadet",
+        "age": 32,
+        "specialization": "Maintenance",
+        "years_experience": 10,
+        "is_active": true
+      },
+      {
+        "member_id": "CM064",
+        "name": "Sarah Johnson",
+        "rank": "officer",
+        "age": 46,
+        "specialization": "Research",
+        "years_experience": 26,
+        "is_active": true
+      },
+      {
+        "member_id": "CM065",
+        "name": "Anna Miller",
+        "rank": "captain",
+        "age": 55,
+        "specialization": "Mission Command",
+        "years_experience": 30,
+        "is_active": true
+      }
+    ],
+    "mission_status": "planned",
+    "budget_millions": 3127.1
+  },
+  {
+    "mission_id": "M2024_MARS",
+    "mission_name": "Asteroid Belt Colony Mission",
+    "destination": "Asteroid Belt",
+    "launch_date": "2024-05-23T00:00:00",
+    "duration_days": 787,
+    "crew": [
+      {
+        "member_id": "CM071",
+        "name": "William Johnson",
+        "rank": "captain",
+        "age": 50,
+        "specialization": "Research",
+        "years_experience": 29,
+        "is_active": true
+      },
+      {
+        "member_id": "CM072",
+        "name": "Alice Brown",
+        "rank": "captain",
+        "age": 28,
+        "specialization": "Engineering",
+        "years_experience": 15,
+        "is_active": true
+      },
+      {
+        "member_id": "CM073",
+        "name": "Maria Connor",
+        "rank": "officer",
+        "age": 41,
+        "specialization": "Mission Command",
+        "years_experience": 21,
+        "is_active": true
+      }
+    ],
+    "mission_status": "planned",
+    "budget_millions": 4254.2
   }
 ]

@@ -145,27 +145,5 @@ ALIEN_CONTACTS = [
         'witness_count': 11,
         'message_received': None,
         'is_verified': False
-    },
-    {
-        'contact_id': 'AC_2024_014',
-        'timestamp': '2024-10-20T00:00:00',
-        'location': 'Atacama Desert, Chile',
-        'contact_type': 'radio',
-        'signal_strength': 7.2,
-        'duration_minutes': 113,
-        'witness_count': 8,
-        'message_received': 'Mathematical sequence detected: prime numbers',
-        'is_verified': False
-    },
-    {
-        'contact_id': 'AC_2024_015',
-        'timestamp': '2024-01-02T00:00:00',
-        'location': 'Roswell, New Mexico',
-        'contact_type': 'radio',
-        'signal_strength': 2.1,
-        'duration_minutes': 9,
-        'witness_count': 13,
-        'message_received': None,
-        'is_verified': False
     }
 ]

@@ -130,15 +130,15 @@ def generate_all_datasets():
     
     # Generate space station data
     station_gen = SpaceStationGenerator(config)
-    stations = station_gen.generate_station_data(10)
+    stations = station_gen.generate_station_data(15)
     
     # Generate alien contact data
     contact_gen = AlienContactGenerator(config)
-    contacts = contact_gen.generate_contact_data(15)
+    contacts = contact_gen.generate_contact_data(13)
     
     # Generate mission data
     mission_gen = CrewMissionGenerator(config)
-    missions = mission_gen.generate_mission_data(5)
+    missions = mission_gen.generate_mission_data(8)
     
     # Export in multiple formats
     datasets = [
